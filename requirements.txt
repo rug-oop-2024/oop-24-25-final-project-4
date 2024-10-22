@@ -3,4 +3,3 @@ pydantic
 pandas
 numpy
 scikit-learn
-test
