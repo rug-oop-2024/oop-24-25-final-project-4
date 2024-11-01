@@ -5,6 +5,7 @@ from abc import ABC
 import base64
 
 class Artifact(ABC, BaseModel):
+    name: str
     asset_path: str
     version: str
     data: bytes
