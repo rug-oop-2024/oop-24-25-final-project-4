@@ -1,5 +1,6 @@
 
 from typing import List
+import pandas as pd
 from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 
@@ -10,4 +11,23 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     Returns:
         List[Feature]: List of features with their types.
     """
-    raise NotImplementedError("This should be implemented by you.")
+    features = []
+    
+    data_frame = dataset.read()
+    
+    if data_frame.isnull().values.any():
+        raise ValueError("The dataset currently contains NaN values, which is not allowed.")
+
+    for col in data_frame.columns:
+        if pd.api.types.is_numeric_dtype(data_frame[col]):
+            feature_type = "numerical"
+        elif pd.api.types.is_categorical_dtype(data_frame[col]) or pd.api.types.is_object_dtype(data_frame[col]):
+            feature_type = "categorical"
+        else:
+            raise ValueError(f"Column '{col}' contains an unsupported feature type.")
+
+        feature = Feature(name=col, type=feature_type)
+        features.append(feature)
+    
+    return features
+
