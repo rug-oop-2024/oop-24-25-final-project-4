@@ -13,8 +13,6 @@ METRICS = [
 
 
 def get_metric(name: str):
-    # Factory function to get a metric by name.
-    # Return a metric instance given its str name.
     if name == "mean_squared_error":
         return MeanSquaredError()
     elif name == "accuracy":
