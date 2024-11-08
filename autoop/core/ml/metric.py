@@ -19,6 +19,14 @@ def get_metric(name: str):
         return MeanSquaredError()
     elif name == "accuracy":
         return Accuracy()
+    elif name == "precision":
+        return Precision()
+    elif name == "recall":
+        return Recall()
+    elif name == "mean_absolute_error":
+        return MeanAbsoluteError()
+    elif name == "r2_score":
+        return R2Score()
     else:
         raise ValueError(f"Unknown metric name: {name}")
 
