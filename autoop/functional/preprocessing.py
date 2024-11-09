@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from io import BytesIO
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-import streamlit as st
 
 
 def preprocess_features(features: List[Feature],
@@ -20,8 +19,6 @@ def preprocess_features(features: List[Feature],
     """
     results = []
     raw = pd.read_csv(BytesIO(dataset.read()))
-    print(type(raw)) # Check if it's a DataFrame
-    print(raw.columns) # Check available columns
     for feature in features:
         print(feature.name)
         if feature.type == "categorical":
