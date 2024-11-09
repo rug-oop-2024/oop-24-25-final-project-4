@@ -13,14 +13,12 @@ class Model(ABC, BaseModel):
     be inherited by specific model types (e.g., regression or classification models).
 
     Attributes:
-        artifact (Artifact): The artifact containing model metadata and path.
         parameters (Dict[str, Any]): A dictionary of model parameters.
         trained (bool): Indicates whether the model has been trained.
         type (Literal["classification", "regression"]): Specifies the type of model (either "classification" or "regression").
         model (Any): The actual model instance that will be used for training and prediction.
     """
 
-    artifact: Artifact
     parameters: Dict[str, Any] = Field(default_factory=dict)
     trained: bool = False
     type: Literal["classification", "regression"] = "other"

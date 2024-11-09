@@ -30,7 +30,8 @@ class MultipleLinearRegression(Model):
         Args:
             artifact (Artifact, optional): The artifact that holds model metadata and asset path. Defaults to a new `Artifact`.
         """
-        super().__init__(artifact=artifact)
+        super().__init__()
+        self.artifact = artifact
         self.model = LinearRegression()
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
