@@ -12,19 +12,19 @@ METRICS = [
 ]
 
 
-def get_metric(name: str):
+def get_metric(name: str, y_true: np.ndarray, y_pred: np.ndarray):
     if name == "mean_squared_error":
-        return MeanSquaredError()
+        return MeanSquaredError(y_true, y_pred)
     elif name == "accuracy":
-        return Accuracy()
+        return Accuracy(y_true, y_pred)
     elif name == "precision":
-        return Precision()
+        return Precision(y_true, y_pred)
     elif name == "recall":
-        return Recall()
+        return Recall(y_true, y_pred)
     elif name == "mean_absolute_error":
-        return MeanAbsoluteError()
+        return MeanAbsoluteError(y_true, y_pred)
     elif name == "r2_score":
-        return R2Score()
+        return R2Score(y_true, y_pred)
     else:
         raise ValueError(f"Unknown metric name: {name}")
 
