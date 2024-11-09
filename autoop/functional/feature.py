@@ -4,16 +4,16 @@ from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 
     
-def detect_feature_types(dataset: Dataset) -> List[Feature]:
+def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
     """Assumption: only categorical and numerical features and no NaN values.
     Args:
-        dataset: Dataset
+        data_frame: pd.Dataframe
     Returns:
         List[Feature]: List of features with their types.
     """
     features = []
     
-    data_frame = dataset.read().dropna()
+    data_frame = data_frame.dropna()
     
     if data_frame.isnull().values.any():
         raise ValueError("The dataset currently contains NaN values, which is not allowed.")
