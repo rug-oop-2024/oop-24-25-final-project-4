@@ -12,7 +12,7 @@ class Model(ABC, BaseModel):
     artifact: Artifact
     parameters: Dict[str, Any] = Field(default_factory=dict)
     trained: bool = False
-    type_of_model: Literal["classification", "regression"] = "other"
+    type: Literal["classification", "regression"] = "other"
 
     @abstractmethod
     def train(self, X: np.ndarray, y: np.ndarray) -> None:

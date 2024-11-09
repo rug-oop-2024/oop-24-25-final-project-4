@@ -114,11 +114,26 @@ Pipeline(
         self._preprocess_features()
         self._split_data()
         self._train()
-        self._evaluate()
-        return {
-            "metrics": self._metrics_results,
-            "predictions": self._predictions,
-        }
-        
 
-    
+        train_X = self._compact_vectors(self._train_X)
+        train_Y = self._train_y
+        self._evaluate()
+
+
+        original_test_X, original_test_y = self._test_X, self._test_y
+        self._test_X, self._test_y = self._train_X, self._train_y
+        self._evaluate()
+        train_metrics_results, train_predictions = self._metrics_results, self._predictions
+
+        self._test_X, self._test_y = original_test_X, original_test_y
+        self._evaluate()
+        test_metrics_results, test_predictions = self._metrics_results, self._predictions
+
+        return {
+            "train_metrics": train_metrics_results,
+            "train_predictions": train_predictions,
+            "test_metrics": test_metrics_results,
+            "test_predictions": test_predictions,
+        }
+
+        
