@@ -26,7 +26,7 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
         else:
             raise ValueError(f"Column '{col}' contains an unsupported feature type.")
 
-        feature = Feature(name=col, data_type=feature_type)
+        feature = Feature(name=col, type=feature_type)
         features.append(feature)
     
     return features

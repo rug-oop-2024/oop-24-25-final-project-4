@@ -8,7 +8,7 @@ from autoop.core.ml.dataset import Dataset
 class Feature(BaseModel):
     name: str = Field(
         ..., description="The feature's name")
-    data_type: str = Field(
+    type: str = Field(
         ..., description="The feature's data type (e.g., 'numerical', 'categorical')")
     is_categorical: bool = Field(
         default=False, description="Whether the feature is categorical")
