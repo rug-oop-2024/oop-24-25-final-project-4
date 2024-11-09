@@ -5,6 +5,7 @@ import numpy as np
 
 
 class DecisionTreeRegressorModel(Model):
+    model: DecisionTreeRegressor = None
     def __init__(self) -> None:
         self.model = DecisionTreeRegressor()
 

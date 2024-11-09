@@ -49,6 +49,9 @@ class Model(ABC, BaseModel):
     def __deepcopy__(self, memo: Dict[int, Any]) -> 'Model':
         """Provide a deep copy of the model."""
         return Model(deepcopy(self.artifact), deepcopy(self.parameters))
+    
+    class Config:
+        arbitrary_types_allowed = True
 
     @property
     def is_trained(self) -> bool:

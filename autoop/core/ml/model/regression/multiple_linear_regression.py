@@ -6,6 +6,7 @@ import numpy as np
 
 
 class MultipleLinearRegression(Model):
+    model: LinearRegression = None
     def __init__(self, artifact: Artifact = Artifact(name="default", asset_path="", version="1.0", data=b"", type="regression")) -> None:
         super().__init__(artifact=artifact)
         self.model = LinearRegression()

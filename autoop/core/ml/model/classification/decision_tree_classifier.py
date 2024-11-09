@@ -6,6 +6,7 @@ from autoop.core.ml.metric import get_metric
 
 
 class DecisionTreeClassifierModel(Model):
+    model: DecisionTreeClassifier = None
     def __init__(self, artifact: Artifact):
         super().__init__(artifact=artifact)
         self.model = DecisionTreeClassifier()

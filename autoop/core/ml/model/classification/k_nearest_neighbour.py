@@ -5,6 +5,7 @@ from autoop.core.ml.metric import get_metric
 
 
 class KNNClassifier(Model):
+    model: KNeighborsClassifier = None
     def __init__(self, n_neighbors: int = 5) -> None:
         self.model = KNeighborsClassifier(n_neighbors=n_neighbors)
 

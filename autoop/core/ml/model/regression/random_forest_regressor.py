@@ -5,6 +5,7 @@ import numpy as np
 
 
 class RandomForestRegressorModel(Model):
+    model: RandomForestRegressor = None
     def __init__(self, n_estimators: int = 100) -> None:
         self.model = RandomForestRegressor(n_estimators=n_estimators)
 

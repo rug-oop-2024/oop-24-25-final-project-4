@@ -5,6 +5,7 @@ from autoop.core.ml.metric import get_metric
 
 
 class RandomForestClassifierModel(Model):
+    model: RandomForestClassifier = None
     def __init__(self, n_estimators: int = 100) -> None:
         self.model = RandomForestClassifier(n_estimators=n_estimators)
 
