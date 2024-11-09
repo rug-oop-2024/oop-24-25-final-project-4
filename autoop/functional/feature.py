@@ -13,8 +13,7 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     """
     features = []
     
-    data_frame = dataset.read()
-    data_frame = data_frame.dropna()
+    data_frame = dataset.read().dropna()
     
     if data_frame.isnull().values.any():
         raise ValueError("The dataset currently contains NaN values, which is not allowed.")

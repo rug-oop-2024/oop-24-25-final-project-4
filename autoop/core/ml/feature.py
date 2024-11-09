@@ -24,5 +24,5 @@ class Feature(BaseModel):
 
     def __repr__(self) -> str:
         return (f"Feature(name={self.name}, data_type={self.data_type}, "
-                f"is_categorical={self.is_categorical},
-                is_continuous={self.is_continuous})")
+                f"is_categorical={self.is_categorical},"
+                f"is_continuous={self.is_continuous})")

@@ -1,11 +1,13 @@
 from sklearn.linear_model import LinearRegression
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
+from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 
 class MultipleLinearRegression(Model):
-    def __init__(self) -> None:
+    def __init__(self, artifact: Artifact = Artifact(name="default", asset_path="", version="1.0", data=b"", type="regression")) -> None:
+        super().__init__(artifact=artifact)
         self.model = LinearRegression()
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

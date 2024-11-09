@@ -13,6 +13,7 @@ class Model(ABC, BaseModel):
     parameters: Dict[str, Any] = Field(default_factory=dict)
     trained: bool = False
     type: Literal["classification", "regression"] = "other"
+    model: Any = None
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
