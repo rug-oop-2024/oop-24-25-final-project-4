@@ -5,6 +5,15 @@ import numpy as np
 
 
 class DecisionTreeRegressorModel(Model):
+    """
+    A wrapper class for the DecisionTreeRegressor model from scikit-learn.
+    It inherits from the abstract `Model` class and implements the
+    `fit`, `predict`, and `evaluate` methods.
+
+    Attributes:
+        model (DecisionTreeRegressor): The underlying scikit-learn DecisionTreeRegressor model instance.
+    """
+
     model: DecisionTreeRegressor = None
     def __init__(self) -> None:
         self.model = DecisionTreeRegressor()

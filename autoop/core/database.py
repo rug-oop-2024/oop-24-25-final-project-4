@@ -1,4 +1,3 @@
-
 import json
 from typing import Tuple, List, Union
 import os
@@ -6,9 +5,41 @@ import os
 from autoop.core.storage import Storage
 
 
-class Database():
+class Database:
+    """
+    A  database class for managing data retrival and storage.
+
+    This class interacts with a storage backend and provides methods
+    to set, get, delete, and list data stored in collections.
+
+    Attributes:
+        _storage (Storage): The storage object to persist data.
+        _data (dict): In-memory dictionary that holds collections and their data.
+
+    Methods:
+        set(collection: str, id: str, entry: dict) -> dict:
+            Stores an entry in a specified collection with a given id.
+
+        get(collection: str, id: str) -> Union[dict, None]:
+            Retrieves an entry from a specified collection by id.
+
+        delete(collection: str, id: str) -> None:
+            Deletes an entry from a specified collection by id.
+
+        list(collection: str) -> List[Tuple[str, dict]]:
+            Lists all entries in a specified collection.
+
+        refresh() -> None:
+            Refreshes the in-memory data by loading it from storage.
+    """
 
     def __init__(self, storage: Storage) -> None:
+        """
+        Initializes the Database with a storage backend and loads data.
+
+        Args:
+            storage (Storage): The storage backend to use for saving and loading data.
+        """
         self._storage = storage
         self._data = {}
         self._load()
@@ -80,8 +111,9 @@ class Database():
             if not data:
                 continue
             for id, item in data.items():
-                self._storage.save(json.dumps(item).encode(),
-                                   f"{collection}{os.sep}{id}")
+                self._storage.save(
+                    json.dumps(item).encode(), f"{collection}{os.sep}{id}"
+                )
 
         # for things that were deleted, we need to remove them from the storage
         keys = self._storage.list("")
