@@ -4,6 +4,7 @@ import unittest
 from autoop.core.storage import LocalStorage, NotFoundError
 import random
 import tempfile
+import os
 
 class TestStorage(unittest.TestCase):
 
@@ -45,6 +46,7 @@ class TestStorage(unittest.TestCase):
         for key in random_keys:
             self.storage.save(test_bytes, key)
         keys = self.storage.list("test")
-        keys = ["/".join(key.split("/")[-2:]) for key in keys]
+        keys = ["/".join(key.split(os.sep)[-2:]) for key in keys]
+        #modified to also work with Windows
+        random_keys = [key.replace("\\", "/") for key in random_keys]
         self.assertEqual(set(keys), set(random_keys))
-            
