@@ -15,6 +15,8 @@ class DecisionTreeRegressorModel(Model):
     """
 
     model: DecisionTreeRegressor = None
+    model: DecisionTreeRegressor = DecisionTreeRegressor()
+
     def __init__(self) -> None:
         self.model = DecisionTreeRegressor()
 
@@ -24,8 +26,7 @@ class DecisionTreeRegressorModel(Model):
     def predict(self, X: np.ndarray) -> np.ndarray:
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray,
-                 metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
         y_pred = self.predict(X)
         metric = get_metric(metric_name)
         return metric(y, y_pred)
