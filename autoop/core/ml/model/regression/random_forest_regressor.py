@@ -8,7 +8,7 @@ class RandomForestRegressorModel(Model):
     def __init__(self, n_estimators=100):
         self.model = RandomForestRegressor(n_estimators=n_estimators)
 
-    def train(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X: np.ndarray, y: np.ndarray):
         self.model.fit(X, y)
 
     def predict(self, X: np.ndarray) -> np.ndarray:

@@ -7,7 +7,7 @@ class MultipleLinearRegression(Model):
     def __init__(self):
         self.model = LinearRegression()
 
-    def train(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X: np.ndarray, y: np.ndarray):
         self.model.fit(X, y)
 
     def predict(self, X: np.ndarray) -> np.ndarray:

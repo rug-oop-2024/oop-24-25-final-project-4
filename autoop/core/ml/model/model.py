@@ -15,7 +15,7 @@ class Model(ABC, BaseModel):
     type: Literal["classification", "regression"] = "other"
 
     @abstractmethod
-    def train(self, X: np.ndarray, y: np.ndarray) -> None:
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """Train the model on the provided data."""
         pass
 

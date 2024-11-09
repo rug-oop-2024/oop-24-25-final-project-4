@@ -7,7 +7,7 @@ class KNNClassifier(Model):
     def __init__(self, n_neighbors=5):
         self.model = KNeighborsClassifier(n_neighbors=n_neighbors)
 
-    def train(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X: np.ndarray, y: np.ndarray):
         self.model.fit(X, y)
 
     def predict(self, X: np.ndarray) -> np.ndarray:
