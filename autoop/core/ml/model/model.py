@@ -32,7 +32,8 @@ class Model(ABC, BaseModel):
     def save(self) -> None:
         """Save model state, parameters, and training details."""
         save_path = self.artifact.asset_path
-        joblib.dump({"model": self.model, "parameters": self.parameters, "trained": self.trained}, save_path)
+        joblib.dump({"model": self.model, "parameters": self.parameters,
+                     "trained": self.trained}, save_path)
         print(f"Model saved at {save_path}.")
 
     def load(self) -> None:
@@ -44,11 +45,10 @@ class Model(ABC, BaseModel):
         self.trained = data["trained"]
         print(f"Model loaded from {load_path}.")
 
-    def __deepcopy__(self,  memo: Dict[int, Any]) -> 'Model':
+    def __deepcopy__(self, memo: Dict[int, Any]) -> 'Model':
         """Provide a deep copy of the model."""
         return Model(deepcopy(self.artifact), deepcopy(self.parameters))
 
     @property
     def is_trained(self) -> bool:
         return self.trained
-    
