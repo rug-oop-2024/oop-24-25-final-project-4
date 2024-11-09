@@ -1,46 +1,47 @@
 from autoop.core.ml.artifact import Artifact
-from abc import ABC, abstractmethod
 import pandas as pd
 import io
-import numpy as np
 from matplotlib import pyplot as plt
+
 
 class Dataset(Artifact):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(type="dataset", *args, **kwargs)
 
     @staticmethod
-    def from_dataframe(data: pd.DataFrame, name: str, asset_path: str, version: str="1.0.0"):
+    def from_dataframe(data: pd.DataFrame, name: str,
+                       asset_path: str,
+                       version: str = "1.0.0") -> "Dataset":
         return Dataset(
             name=name,
             asset_path=asset_path,
             data=data.to_csv(index=False).encode(),
             version=version,
         )
-        
+
     def read(self) -> pd.DataFrame:
         bytes = super().read()
         csv = bytes.decode()
         return pd.read_csv(io.StringIO(csv))
-    
+
     def save(self, data: pd.DataFrame) -> bytes:
         bytes = data.to_csv(index=False).encode()
         return super().save(bytes)
 
 
 class DataPlotter:
-    '''
+    """
     A class to plot instances of the Dataset class
-    '''
+    """
     def __init__(
-            self,
-            data: Dataset,
-        ) -> None:
+                self,
+                data: Dataset,
+                ) -> None:
         self._data = data
 
     def hist_1d(self, variable: str, **kwargs) -> plt.Figure:
-        '''
+        """
         Plots a 1D histogram of the dataset for the given variable
 
         Arguments:
@@ -49,7 +50,7 @@ class DataPlotter:
 
         Returns:
         None
-        '''
+        """
         data = self._data[variable]
 
         if "bins" not in kwargs:
@@ -85,9 +86,9 @@ class DataPlotter:
         plt.show()
         return plt.gcf()
 
-    
-    def scatter_3d(self, x_variable: str, y_variable: str, z_variable: str, **kwargs) -> plt.Figure:
-        '''
+    def scatter_3d(self, x_variable: str, y_variable: str,
+                   z_variable: str, **kwargs) -> plt.Figure:
+        """
         Plots a 3D scatter plot of the dataset for the given
         x, y and z variables.
 
@@ -99,10 +100,10 @@ class DataPlotter:
 
         Returns:
         None
-        '''
+        """
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        
+
         x_data = self._data[x_variable]
         y_data = self._data[y_variable]
         z_data = self._data[z_variable]
@@ -116,4 +117,3 @@ class DataPlotter:
             return fig
         except ValueError:
             raise ValueError
-    

@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-import json
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
+
 
 def save_dataset(file: Dataset, name: str) -> None:
     data = pd.read_csv(file)
@@ -11,18 +11,21 @@ def save_dataset(file: Dataset, name: str) -> None:
     asset_path = f"datasets/{name}.csv"
 
     new_dataset = Dataset.from_dataframe(
-        data, 
-        name=name, 
+        data,
+        name=name,
         asset_path=asset_path,
         version="1.0.0",
     )
 
     try:
         automl.registry.register(new_dataset)
-        st.success(f"""Dataset '{dataset_name}' has been uploaded and registered successfully. 
+        st.success(f"""Dataset '{dataset_name}' has been uploaded
+                   and registered successfully.
                    Refresh the page to see it under 'Availabe Datasets'""")
     except UnicodeDecodeError:
-        st.error("Error: Dataset could not be registered due to encoding issues.")
+        st.error("""Error: Dataset could not be
+                 registered due to encoding issues.""")
+
 
 def display_datasets(datasets: list[Dataset]) -> None:
     number_datasets = len(datasets)
@@ -47,8 +50,10 @@ st.subheader("Upload a New Dataset")
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 dataset_name = st.text_input("Dataset Name", placeholder="Enter dataset name")
 
+upload_button = st.button("Upload Dataset")
+
 # Save the dataset
-if uploaded_file and dataset_name:
+if upload_button and uploaded_file and dataset_name:
     save_dataset(uploaded_file, dataset_name)
 
 st.subheader("Available Datasets")
@@ -56,5 +61,4 @@ st.subheader("Available Datasets")
 if datasets:
     display_datasets(datasets)
 else:
-    st.write("No datasets available.")
-
+    st.write("You currently have no datasets uploaded. Please upload a dataset at the top of the page.")
