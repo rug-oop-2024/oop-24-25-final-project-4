@@ -4,7 +4,7 @@ from io import BytesIO
 import re
 import os
 import pickle
-from datetime import datetime
+import numpy as np
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset, DataPlotter
@@ -28,6 +28,8 @@ from autoop.core.ml.metric import (
     MeanAbsoluteError,
     R2Score)
 from autoop.core.ml.pipeline import Pipeline
+from autoop.core.ml.artifact import Artifact
+from autoop.core.ml.model.model import Model
 from typing import Any
 
 if 'pipeline_results' not in st.session_state:
@@ -167,6 +169,11 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     train_predictions_sample = train_predictions[:10]
     test_predictions_sample = test_predictions[:10]
 
+    if isinstance(train_predictions_sample, (list, np.ndarray)) and isinstance(train_predictions_sample[0], (list, np.ndarray)):
+        train_predictions_sample = [item[0] for item in train_predictions_sample]
+    if isinstance(test_predictions_sample, (list, np.ndarray)) and isinstance(test_predictions_sample[0], (list, np.ndarray)):
+        test_predictions_sample = [item[0] for item in test_predictions_sample]
+
     predictions_df = pd.DataFrame({
         "Train Predictions": train_predictions_sample,
         "Test Predictions": test_predictions_sample
@@ -178,7 +185,7 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     st.write(predictions_df)
 
 
-def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
+def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model]:
     """
     Create and configure a machine learning pipeline based on user input.
 
@@ -201,6 +208,8 @@ def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
                   "Mean Squared Error": MeanSquaredError,
                   "Mean Absolute Error": MeanAbsoluteError,
                   "R^2 Score": R2Score}
+
+    model = None
 
     features = detect_feature_types(data)
     feature_map = {feature.name: feature for feature in features}
@@ -268,7 +277,6 @@ def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
                          selected_model, dataset_split, selected_metrics)
 
         pipeline_button = st.button("Train the model")
-        pipeline_trained = False
         if pipeline_button:
             pipeline = Pipeline(
                 metrics_list,
@@ -283,61 +291,63 @@ def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
             if st.session_state.pipeline_trained:
                 display_pipeline_results(st.session_state.pipeline_results)
 
-    return st.session_state.get("pipeline_results", {})
+    return st.session_state.get("pipeline_results", {}), model
 
 
-def save_pipeline(name: str, version: str,
-                  results: dict[str, Any]) -> None:
+def save_pipeline(name: str, version: str, model, results: dict) -> None:
     """
-    Save the machine learning pipeline configuration, including the model, 
-    metrics, and artifacts to a directory for future use or deployment.
-    
+    Save the machine learning pipeline, including the trained model and metadata,
+    as an Artifact in the AutoML system.
+
     Args:
         name (str): The name of the pipeline.
-        version (str): The version of the pipeline, in the format 'major.minor.patch'.
-        results (dict[str, Any]): A dictionary containing the results of the pipeline execution, 
-                                  including train/test metrics, model predictions, and artifacts.
-    
-    This function creates a directory named "pipelines/{name}_{version}" to store:
-        - A pipeline configuration file (`pipeline_config.pkl`), which contains:
-            - `name`: The name of the pipeline
-            - `version`: The version of the pipeline
-            - `input_features`: List of input feature names used in the pipeline
-            - `target_feature`: The target feature used in the pipeline
-            - `split`: The data split ratio used for training and testing
-            - `model`: The name of the trained model
-        - Any artifacts associated with the pipeline are saved as separate `.pkl` files.
-        - A `timestamp.txt` file indicating when the pipeline was saved.
+        version (str): The version of the pipeline, e.g., '1.0.0'.
+        model: The trained model object (e.g., scikit-learn, XGBoost model).
+        results (dict): Dictionary containing pipeline metadata such as metrics,
+                        input features, target feature, split ratios, and artifacts.
+
+    Saves:
+        An Artifact containing the serialized model and metadata in the AutoML registry.
     """
-
-    pipeline_dir = f"pipelines/{name}_{version}"
+    pipeline_dir = "./pipelines"
     os.makedirs(pipeline_dir, exist_ok=True)
-
-    pipeline_config = {
+    asset_path = os.path.join(pipeline_dir, f"{name}_{version}.pkl")
+    
+    metadata = {
         "name": name,
         "version": version,
-        "input_features": [str(feature) for feature in results["train_metrics"]],
-        "target_feature": str(results["test_metrics"]),
-        "split": results["test_predictions"],
-        "model": str(results["train_predictions"])
+        "input_features": results.get("input_features", []),
+        "target_feature": results.get("target_feature", ""),
+        "split": results.get("split", ""),
+        "metrics": results.get("metrics", {}),
     }
-    
-    config_file = os.path.join(pipeline_dir, "pipeline_config.pkl")
-    with open(config_file, "wb") as f:
-        pickle.dump(pipeline_config, f)
-    
-    artifacts = results.get("artifacts", [])
-    for artifact in artifacts:
-        artifact_name = artifact.name
-        artifact_file = os.path.join(pipeline_dir, f"{artifact_name}.pkl")
-        with open(artifact_file, "wb") as f:
-            pickle.dump(artifact.read(), f)
 
-    timestamp_file = os.path.join(pipeline_dir, "timestamp.txt")
-    with open(timestamp_file, "w") as f:
-        f.write(f"Pipeline saved on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    artifact_data = {
+        "model": model,
+        "metadata": metadata,
+    }
 
-    st.write(f"Pipeline saved at: {pipeline_dir}")
+    serialized_data = pickle.dumps(artifact_data)
+
+    with open(asset_path, "wb") as f:
+        f.write(serialized_data)
+
+    artifact = Artifact(
+        name=f"{name}_{version}",
+        version=version,
+        data=serialized_data,
+        asset_path=asset_path, 
+        type="pipeline",
+        tags=["machine_learning", "pipeline", name],
+        metadata=metadata
+    )
+
+    automl = AutoMLSystem.get_instance()
+    automl.registry.register(artifact)
+
+    st.success(f"""Pipeline '{name}' has been uploaded
+               and registered successfully. You can now use it
+               on the deployment page""")
 
 
 st.set_page_config(page_title="Modelling", page_icon="📈")
@@ -363,7 +373,7 @@ else:
     if to_do == 'Create a plot':
         plot(dataframe)
     elif to_do == 'Train a model':
-        pipeline_results = create_pipeline(dataframe)
+        pipeline_results, model = create_pipeline(dataframe)
         if pipeline_results:
             name = st.text_input(
                 "Enter a name for the pipeline:",
@@ -385,4 +395,5 @@ else:
                     st.button("Save Pipeline"))):
                 save_pipeline(st.session_state.pipeline_name,
                               st.session_state.pipeline_version,
+                              model,
                               pipeline_results)

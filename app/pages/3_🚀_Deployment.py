@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from app.core.system import AutoMLSystem
 from autoop.core.ml.artifact import Artifact
+import pickle
 
 def select_pipeline(pipelines: list[Artifact]) -> Artifact:
     """
@@ -51,16 +52,18 @@ else:
     selected_pipeline = select_pipeline(pipelines)
     show_summary(selected_pipeline)
 
-    uploaded_file = st.file_uploader(
-        "Upload a CSV file for prediction",
-        type="csv")
+    loaded_data = pickle.loads(selected_pipeline.data)
+
+    model = loaded_data["model"]
+
+    uploaded_file = st.file_uploader("Upload a CSV file for prediction", type="csv")
     if uploaded_file is not None:
         input_data = pd.read_csv(uploaded_file)
         st.write("Uploaded Data:", input_data.head())
 
-        predictions = selected_pipeline.object.predict(input_data)
+        predictions = model.predict(input_data)
         st.write("Predictions:", predictions)
-        
+
         prediction_df = pd.DataFrame(predictions, columns=["Prediction"])
         st.download_button(
             label="Download Predictions as CSV",
