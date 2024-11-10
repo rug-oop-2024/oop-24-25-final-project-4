@@ -175,11 +175,11 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     test_predictions_sample = test_predictions[:10]
 
     if isinstance(train_predictions_sample, (list, np.ndarray)) and (
-        isinstance(train_predictions_sample[0], (list, np.ndarray))):
+            isinstance(train_predictions_sample[0], (list, np.ndarray))):
         train_predictions_sample = [
             item[0] for item in train_predictions_sample]
     if isinstance(test_predictions_sample, (list, np.ndarray)) and (
-        isinstance(test_predictions_sample[0], (list, np.ndarray))):
+            isinstance(test_predictions_sample[0], (list, np.ndarray))):
         test_predictions_sample = [
             item[0] for item in test_predictions_sample]
 
