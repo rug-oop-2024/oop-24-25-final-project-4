@@ -8,6 +8,15 @@ class NotFoundError(Exception):
     """Exception raised when a given path is not found."""
 
     def __init__(self, path: str) -> None:
+        """
+        Initializes the NotFoundError with a specific path.
+
+        Args:
+            path (str): The path that was not found.
+
+        Example:
+            raise NotFoundError("/path/to/file")
+        """
         super().__init__(f"Path not found: {path}")
 
 
