@@ -181,6 +181,6 @@ If you did not implement the feature
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|`ST/moddelling/plot`                   |NF            |Heleeen van Asselt    |X        |     |
+|`ST/modelling/plot`                    |NF            |Heleeen van Asselt    |X        |     |
 |`core/instructions `                   |NF            |Raha Torabihaghighi   |X        |     |
 |`core/welcome`                         |NF            |Raha Torabihaghighi   |X        |     |
