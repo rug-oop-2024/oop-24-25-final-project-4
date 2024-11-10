@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
-from pydantic import BaseModel, Field
-from autoop.core.ml.artifact import Artifact
 import numpy as np
 import joblib
 from copy import deepcopy
-from typing import Literal, Any, Dict
+from typing import Any, Dict
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -18,46 +16,69 @@ class Model(ABC):
     Abstract base class for machine learning models.
     """
 
-    def __init__(self, parameters: dict[str, Any] = None, trained: bool = False, type: str = "other"):
+    def __init__(self, parameters: dict[str, Any] = None,
+                 trained: bool = False, type: str = "other") -> None:
         self.parameters = parameters if parameters is not None else {}
         self.trained = trained
         self.type = type
-        self.model = None  # Default to None, subclass should define it.
+        self.model = None
 
     @property
-    def parameters(self):
+    def parameters(self) -> dict[str, Any]:
         return self._parameters
-    
+
     @parameters.setter
-    def parameters(self, parameters):
+    def parameters(self, parameters: dict[str, Any]) -> None:
         if isinstance(parameters, dict):
             self._parameters = parameters
 
     @property
-    def trained(self):
+    def trained(self) -> bool:
         return self._trained
-    
+
     @trained.setter
-    def trained(self, trained):
+    def trained(self, trained: bool) -> None:
         if isinstance(trained, bool):
             self._trained = trained
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self._type
-    
+
     @type.setter
-    def type(self, type):
-        if isinstance(type, str) and type in ["classification", "regression", "other"]:
+    def type(self, type: str) -> None:
+        if (isinstance(type, str) and
+            type in ["classification", "regression", "other"]):
             self._type = type
 
     @property
-    def model(self):
+    def model(self) -> (
+        DecisionTreeClassifier |
+        KNeighborsClassifier |
+        RandomForestClassifier |
+        DecisionTreeRegressor |
+        LinearRegression |
+        RandomForestRegressor
+    ):
         return self._model
 
     @model.setter
-    def model(self, model):
-        if isinstance(model, (DecisionTreeClassifier, KNeighborsClassifier, RandomForestClassifier, DecisionTreeRegressor, LinearRegression, RandomForestRegressor)):
+    def model(self, model:(
+        DecisionTreeClassifier |
+        KNeighborsClassifier |
+        RandomForestClassifier |
+        DecisionTreeRegressor |
+        LinearRegression |
+        RandomForestRegressor
+    )) -> None:
+        if isinstance(model, (
+            DecisionTreeClassifier,
+            KNeighborsClassifier,
+            RandomForestClassifier,
+            DecisionTreeRegressor,
+            LinearRegression,
+            RandomForestRegressor
+        )):
             self._model = model
 
     @abstractmethod
@@ -74,7 +95,8 @@ class Model(ABC):
 
     def save(self) -> None:
         """
-        Save the model state, parameters, and training details to the specified artifact path.
+        Save the model state, parameters,
+        and training details to the specified artifact path.
         """
         save_path = self.artifact.asset_path
         joblib.dump(
@@ -89,7 +111,8 @@ class Model(ABC):
 
     def load(self) -> None:
         """
-        Load the model state, parameters, and training details from the specified artifact path.
+        Load the model state, parameters,
+        and training details from the specified artifact path.
         """
         load_path = self.artifact.asset_path
         data = joblib.load(load_path)
@@ -106,7 +129,8 @@ class Model(ABC):
             memo (Dict[int, Any]): A memo dictionary to help with deep copy.
 
         Returns:
-            Model: A new instance of the model that is a deep copy of the current one.
+            Model: A new instance of the model that is
+            a deep copy of the current one.
         """
         return Model(deepcopy(self.artifact), deepcopy(self.parameters))
 
@@ -116,8 +140,9 @@ class Model(ABC):
         settings for the `Model` class.
 
         Attributes:
-            arbitrary_types_allowed (bool): If set to `True`, allows attributes to have types
-                                            that are not built-in types or Pydantic models.
+            arbitrary_types_allowed (bool):
+            If set to `True`, allows attributes to have types
+            that are not built-in types or Pydantic models.
         """
 
         arbitrary_types_allowed = True

@@ -14,7 +14,8 @@ class Database:
 
     Attributes:
         _storage (Storage): The storage object to persist data.
-        _data (dict): In-memory dictionary that holds collections and their data.
+        _data (dict): In-memory dictionary that holds collections
+        and their data.
 
     Methods:
         set(collection: str, id: str, entry: dict) -> dict:
@@ -38,7 +39,8 @@ class Database:
         Initializes the Database with a storage backend and loads data.
 
         Args:
-            storage (Storage): The storage backend to use for saving and loading data.
+            storage (Storage): The storage backend to use
+            for saving and loading data.
         """
         self._storage = storage
         self._data = {}

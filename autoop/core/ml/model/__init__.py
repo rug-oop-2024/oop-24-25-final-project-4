@@ -1,11 +1,16 @@
-
 from autoop.core.ml.model.model import Model
-from autoop.core.ml.model.regression.multiple_linear_regression import MultipleLinearRegression
-from autoop.core.ml.model.regression.decision_tree_regressor import DecisionTreeRegressorModel
-from autoop.core.ml.model.regression.random_forest_regressor import RandomForestRegressor
-from autoop.core.ml.model.classification.decision_tree_classifier import DecisionTreeClassifierModel
-from autoop.core.ml.model.classification.random_forest_classifier import RandomForestClassifierModel
-from autoop.core.ml.model.classification.k_nearest_neighbour import KNNClassifier
+from autoop.core.ml.model.regression.multiple_linear_regression import (
+    MultipleLinearRegression)
+from autoop.core.ml.model.regression.decision_tree_regressor import (
+    DecisionTreeRegressorModel)
+from autoop.core.ml.model.regression.random_forest_regressor import (
+    RandomForestRegressor)
+from autoop.core.ml.model.classification.decision_tree_classifier import (
+    DecisionTreeClassifierModel)
+from autoop.core.ml.model.classification.random_forest_classifier import (
+    RandomForestClassifierModel)
+from autoop.core.ml.model.classification.k_nearest_neighbour import (
+    KNNClassifier)
 
 REGRESSION_MODELS = [
     "decision_tree_regressor",
@@ -18,6 +23,7 @@ CLASSIFICATION_MODELS = [
     "k_nearest_neighbour",
     "random_forest_classifier"
 ]
+
 
 def get_model(model_name: str) -> Model:
     """Factory function to get a model by name."""

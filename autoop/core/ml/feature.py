@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 
+
 class Feature:
     """
     A class representing a feature in a dataset. This class contains
@@ -10,20 +11,27 @@ class Feature:
 
     Attributes:
         name (str): The name of the feature.
-        type (str): The data type of the feature (e.g., 'numerical', 'categorical').
+        type (str): The data type of the feature
+        (e.g., 'numerical', 'categorical').
         is_categorical (bool): Whether the feature is categorical.
         is_continuous (bool): Whether the feature is continuous.
     """
 
-    def __init__(self, name: str, type: str = "other", is_categorical: bool = False, is_continuous: bool = False):
+    def __init__(self, name: str,
+                 type: str = "other",
+                 is_categorical: bool = False,
+                 is_continuous: bool = False) -> None:
         """
         Initialize a Feature instance with its name, type, and properties.
 
         Args:
             name (str): The name of the feature.
-            type (str): The data type of the feature (e.g., 'numerical', 'categorical').
-            is_categorical (bool): Whether the feature is categorical. Defaults to False.
-            is_continuous (bool): Whether the feature is continuous. Defaults to False.
+            type (str): The data type of the feature
+            (e.g., 'numerical', 'categorical').
+            is_categorical (bool): Whether the feature is categorical.
+            Defaults to False.
+            is_continuous (bool): Whether the feature is continuous.
+            Defaults to False.
         """
         self.name = name
         self.type = type
@@ -33,41 +41,41 @@ class Feature:
         self._scaler = MinMaxScaler() if is_continuous else None
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str) -> None:
         if isinstance(name, str):
             self._name = name
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self._type
 
     @type.setter
-    def type(self, type):
-        if isinstance(type, str) and type in ["categorical", "numerical", "other"]:
+    def type(self, type: str) -> None:
+        if (isinstance(type, str) and
+            type in ["categorical", "numerical", "other"]):
             self._type = type
 
     @property
-    def is_categorical(self):
+    def is_categorical(self) -> bool:
         return self._is_categorical
 
     @is_categorical.setter
-    def is_categorical(self, is_categorical):
+    def is_categorical(self, is_categorical: bool) -> None:
         if isinstance(is_categorical, bool):
             self._is_categorical = is_categorical
 
     @property
-    def is_continuous(self):
+    def is_continuous(self) -> bool:
         return self._is_continuous
 
     @is_continuous.setter
-    def is_continuous(self, is_continuous):
+    def is_continuous(self, is_continuous: bool) -> None:
         if isinstance(is_continuous, bool):
             self._is_continuous = is_continuous
-
 
     def encode(self, values: np.ndarray) -> np.ndarray:
         """
@@ -86,7 +94,8 @@ class Feature:
             encoded_values = self._encoder.fit_transform(values)
             return encoded_values
         else:
-            raise ValueError("encode() can only be called on categorical features")
+            raise ValueError("""encode() can only be called
+                             on categorical features""")
 
     def normalize(self, values: np.ndarray) -> np.ndarray:
         """
@@ -101,10 +110,13 @@ class Feature:
         if self.is_continuous:
             if self._scaler is None:
                 self._scaler = MinMaxScaler()
-            normalized_values = self._scaler.fit_transform(values.reshape(-1, 1)).flatten()
+            normalized_values = (self._scaler
+                                 .fit_transform(values.reshape(-1, 1))
+                                 .flatten())
             return normalized_values
         else:
-            raise ValueError("normalize() can only be called on continuous features")
+            raise ValueError("""normalize() can only be
+                             called on continuous features""")
 
     def __repr__(self) -> str:
         """

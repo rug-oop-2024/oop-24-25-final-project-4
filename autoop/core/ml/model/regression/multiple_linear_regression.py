@@ -1,9 +1,8 @@
 from sklearn.linear_model import LinearRegression
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
-from autoop.core.ml.artifact import Artifact
 import numpy as np
-from typing import Dict, Any
+from typing import Any
 
 
 class MultipleLinearRegression(Model):
@@ -13,13 +12,16 @@ class MultipleLinearRegression(Model):
     `fit`, `predict`, and `evaluate` methods.
 
     Attributes:
-        artifact (Artifact): The artifact associated with the model, containing model metadata and path.
-        model (LinearRegression): The underlying scikit-learn LinearRegression model instance.
+        artifact (Artifact): The artifact associated with the model,
+        containing model metadata and path.
+        model (LinearRegression): The underlying
+        scikit-learn LinearRegression model instance.
     """
 
     def __init__(self, parameters: dict[str, Any] = {}) -> None:
         """
-        Initialize the MultipleLinearRegression model with the given artifact and LinearRegression instance.
+        Initialize the MultipleLinearRegression model with
+        the given artifact and LinearRegression instance.
         """
         super().__init__(type="regression", parameters=parameters)
         self.model = LinearRegression(**self.parameters)
@@ -46,7 +48,8 @@ class MultipleLinearRegression(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray,
+                 metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 

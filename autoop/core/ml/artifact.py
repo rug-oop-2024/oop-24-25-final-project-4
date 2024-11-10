@@ -59,13 +59,16 @@ class Artifact(ABC, BaseModel):
     @property
     def id(self) -> str:
         """
-        Generates a unique identifier for the artifact based on its asset path and version.
+        Generates a unique identifier for the artifact
+        based on its asset path and version.
 
         Returns:
             str: The unique identifier of the artifact.
         """
         asset_path_encoded = Artifact.encode_id(self.asset_path)
-        version = self.version.replace(",", "_").replace(":", "_").replace("=", "_")
+        version = (self.version.replace(",", "_")
+                   .replace(":", "_")
+                   .replace("=", "_"))
         return f"{asset_path_encoded}_{version}"
 
     def read(self) -> bytes:

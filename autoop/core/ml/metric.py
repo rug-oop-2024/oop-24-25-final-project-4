@@ -118,7 +118,8 @@ class Accuracy(Metric):
         """
         correct_predictions = np.sum(y_true == y_pred)
         total_predictions = len(y_true)
-        return correct_predictions / total_predictions if total_predictions > 0 else 0.0
+        return (correct_predictions / total_predictions
+                if total_predictions > 0 else 0.0)
 
 
 class Precision(Metric):
@@ -145,7 +146,8 @@ class Precision(Metric):
         """
         true_positives = np.sum((y_true == 1) & (y_pred == 1))
         predicted_positives = np.sum(y_pred == 1)
-        return true_positives / predicted_positives if predicted_positives != 0 else 0.0
+        return (true_positives / predicted_positives
+                if predicted_positives != 0 else 0.0)
 
 
 class Recall(Metric):
@@ -172,7 +174,8 @@ class Recall(Metric):
         """
         true_positives = np.sum((y_true == 1) & (y_pred == 1))
         actual_positives = np.sum(y_true == 1)
-        return true_positives / actual_positives if actual_positives != 0 else 0.0
+        return (true_positives / actual_positives
+                if actual_positives != 0 else 0.0)
 
 
 class MeanAbsoluteError(Metric):
@@ -183,7 +186,8 @@ class MeanAbsoluteError(Metric):
 
     Methods:
         __call__(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-            Calculate the Mean Absolute Error between true and predicted values.
+            Calculate the Mean Absolute Error between true
+            and predicted values.
     """
 
     def __call__(self, y_true: np.ndarray, y_pred: np.ndarray) -> float:

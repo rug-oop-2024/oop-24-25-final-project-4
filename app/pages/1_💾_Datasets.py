@@ -61,4 +61,5 @@ st.subheader("Available Datasets")
 if datasets:
     display_datasets(datasets)
 else:
-    st.write("You currently have no datasets uploaded. Please upload a dataset at the top of the page.")
+    st.write("""You currently have no datasets uploaded.
+             Please upload a dataset at the top of the page.""")

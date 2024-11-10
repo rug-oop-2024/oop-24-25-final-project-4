@@ -2,8 +2,7 @@ from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
-from pydantic import PrivateAttr
-from typing import Dict, Any
+from typing import Any
 
 
 class DecisionTreeClassifierModel(Model):
@@ -13,11 +12,13 @@ class DecisionTreeClassifierModel(Model):
     `fit`, `predict`, and `evaluate` methods.
 
     Attributes:
-        artifact (Artifact): The artifact associated with the model, containing model metadata and path.
-        model (DecisionTreeClassifier): The underlying scikit-learn DecisionTreeClassifier model instance.
+        artifact (Artifact): The artifact associated with the model,
+        containing model metadata and path.
+        model (DecisionTreeClassifier): The underlying
+        scikit-learn DecisionTreeClassifier model instance.
     """
 
-    def __init__(self, parameters: dict[str, Any] = {}):
+    def __init__(self, parameters: dict[str, Any] = {}) -> None:
         """
         Train the DecisionTreeClassifier on the provided data.
 
@@ -28,7 +29,7 @@ class DecisionTreeClassifierModel(Model):
         super().__init__(type="classification", parameters=parameters)
         self.model = DecisionTreeClassifier(**self.parameters)
 
-    def fit(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """
         Train the DecisionTreeClassifier on the provided data.
 
@@ -50,7 +51,8 @@ class DecisionTreeClassifierModel(Model):
         """
         return self._model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray,
+                 y: np.ndarray, metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 

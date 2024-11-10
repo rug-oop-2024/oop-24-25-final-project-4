@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestRegressor
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
 import numpy as np
-from typing import Dict, Any
+from typing import Any
 
 
 class RandomForestRegressorModel(Model):
@@ -12,26 +12,31 @@ class RandomForestRegressorModel(Model):
     `fit`, `predict`, and `evaluate` methods.
 
     Attributes:
-        model (RandomForestRegressor): The underlying scikit-learn RandomForestRegressor model instance.
+        model (RandomForestRegressor): The underlying
+        scikit-learn RandomForestRegressor model instance.
     """
 
-    def __init__(self, n_estimators: int = 100, parameters: dict[str, Any] = {}) -> None:
+    def __init__(self, n_estimators: int = 100,
+                 parameters: dict[str, Any] = {}) -> None:
         """
-        Initialize the RandomForestRegressorModel with the specified number of estimators.
+        Initialize the RandomForestRegressorModel with
+        the specified number of estimators.
 
         Args:
-            n_estimators (int, optional): The number of trees in the forest. Defaults to 100.
+            n_estimators (int, optional): The number of trees
+            in the forest. Defaults to 100.
         """
         super().__init__(type="regression", parameters=parameters)
         self.n_estimators = n_estimators
-        self.model = RandomForestRegressor(n_estimators=self.n_estimators, **self.parameters)
+        self.model = RandomForestRegressor(
+            n_estimators=self.n_estimators, **self.parameters)
 
     @property
-    def n_estimators(self):
+    def n_estimators(self) -> int:
         return self._n_estimators
 
     @n_estimators.setter
-    def n_estimators(self, n_estimators):
+    def n_estimators(self, n_estimators: int) -> None:
         if isinstance(n_estimators, int):
             self._n_estimators = n_estimators
 
@@ -57,7 +62,8 @@ class RandomForestRegressorModel(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray,
+                 metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 

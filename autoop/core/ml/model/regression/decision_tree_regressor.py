@@ -2,7 +2,7 @@ from sklearn.tree import DecisionTreeRegressor
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
 import numpy as np
-from typing import Dict, Any
+from typing import Any
 
 
 class DecisionTreeRegressorModel(Model):
@@ -12,7 +12,8 @@ class DecisionTreeRegressorModel(Model):
     `fit`, `predict`, and `evaluate` methods.
 
     Attributes:
-        model (DecisionTreeRegressor): The underlying scikit-learn DecisionTreeRegressor model instance.
+        model (DecisionTreeRegressor): The underlying
+        scikit-learn DecisionTreeRegressor model instance.
     """
     def __init__(self, parameters: dict[str, Any] = {}) -> None:
         super().__init__(type="regression", parameters=parameters)
@@ -23,7 +24,8 @@ class DecisionTreeRegressorModel(Model):
         Fits the DecisionTreeRegressor model to the training data.
 
         Args:
-            X (np.ndarray): Training feature data of shape (n_samples, n_features).
+            X (np.ndarray): Training feature data of shape
+            (n_samples, n_features).
             y (np.ndarray): Target values of shape (n_samples,).
 
         Returns:
@@ -33,7 +35,8 @@ class DecisionTreeRegressorModel(Model):
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
-        Predicts target values for the given feature data using the trained model.
+        Predicts target values for the given feature data
+        using the trained model.
 
         Args:
             X (np.ndarray): Feature data for which predictions are to be made,
@@ -44,12 +47,15 @@ class DecisionTreeRegressorModel(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray,
+                 metric_name: str) -> float:
         """
-        Evaluates the model's predictions against true values using a specified metric.
+        Evaluates the model's predictions against true values
+        using a specified metric.
 
         Args:
-            X (np.ndarray): Feature data for evaluation, of shape (n_samples, n_features).
+            X (np.ndarray): Feature data for evaluation, of shape
+            (n_samples, n_features).
             y (np.ndarray): True target values of shape (n_samples,).
             metric_name (str): The name of the evaluation metric to be used.
 
