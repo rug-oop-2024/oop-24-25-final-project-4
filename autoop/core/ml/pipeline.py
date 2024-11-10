@@ -15,8 +15,9 @@ class Pipeline:
     """
     A class representing a machine learning pipeline.
 
-    This class is responsible for managing the lifecycle of a pipeline, including
-    preprocessing, training, evaluating, and saving the model and artifacts.
+    This class is responsible for managing the lifecycle
+    of a pipeline, including preprocessing, training,
+    evaluating, and saving the model and artifacts.
     """
 
     def __init__(
@@ -29,7 +30,8 @@ class Pipeline:
         split: int = 0.8,
     ) -> None:
         """
-        Initializes the pipeline with the given metrics, dataset, model, features, and split ratio.
+        Initializes the pipeline with the given metrics,
+        dataset, model, features, and split ratio.
 
         Args:
             metrics (List[Metric]): The list of metrics to evaluate the model.
@@ -37,10 +39,12 @@ class Pipeline:
             model (Model): The machine learning model to be used.
             input_features (List[Feature]): The input features for the model.
             target_feature (Feature): The target feature for prediction.
-            split (float, optional): The ratio of data to use for training (default is 0.8).
-        
+            split (float, optional): The ratio of data to use for
+            training (default is 0.8).
+
         Raises:
-            ValueError: If the target feature type does not match the model type.
+            ValueError: If the target feature type does
+            not match the model type.
         """
         self._dataset = dataset
         self._model = model
@@ -62,7 +66,8 @@ class Pipeline:
 
     def __str__(self) -> str:
         """
-        Returns a string representation of the pipeline, including model type, features, and metrics.
+        Returns a string representation of the pipeline,
+        including model type, features, and metrics.
 
         Returns:
             str: The string representation of the pipeline.
@@ -131,9 +136,11 @@ Pipeline(
 
     def _preprocess_features(self) -> None:
         """
-        Preprocesses the input and target features, storing the results as artifacts.
+        Preprocesses the input and target features,
+        storing the results as artifacts.
 
-        This step involves transforming raw features into usable formats for training and evaluation.
+        This step involves transforming raw features
+        into usable formats for training and evaluation.
         """
         (target_feature_name, target_data, artifact) = preprocess_features(
             [self._target_feature], self._dataset
@@ -149,7 +156,8 @@ Pipeline(
 
     def _split_data(self) -> np.ndarray:
         """
-        Splits the data into training and testing sets based on the split ratio.
+        Splits the data into training and testing sets based
+        on the split ratio.
         """
         split = self._split
         self._train_X = [
@@ -167,7 +175,8 @@ Pipeline(
 
     def _compact_vectors(self, vectors: List[np.array]) -> np.array:
         """
-        Combines several feature vectors into a compact vector by concatenating them.
+        Combines several feature vectors into a compact vector
+        by concatenating them.
 
         Args:
             vectors (List[np.array]): A list of feature vectors.
@@ -201,10 +210,12 @@ Pipeline(
 
     def execute(self) -> dict[str, Any]:
         """
-        Executes the entire pipeline: preprocess, train, evaluate, and return results.
-        
+        Executes the entire pipeline: preprocess, train,
+        evaluate, and return results.
+
         Returns:
-            dict[str, Any]: A dictionary containing the metrics and predictions for training and testing.
+            dict[str, Any]: A dictionary containing the metrics
+            and predictions for training and testing.
         """
         self._preprocess_features()
         self._split_data()

@@ -76,7 +76,8 @@ class Feature:
 
     @type.setter
     def type(self, type: str) -> None:
-        if isinstance(type, str) and type in ["categorical", "numerical", "other"]:
+        if isinstance(type, str) and type in ["categorical",
+                                              "numerical", "other"]:
             self._type = type
 
     @property
@@ -95,7 +96,8 @@ class Feature:
         Sets whether the feature is categorical.
 
         Args:
-            is_categorical (bool): True if the feature is categorical, otherwise False.
+            is_categorical (bool): True if the feature is categorical,
+            otherwise False.
         """
         if isinstance(is_categorical, bool):
             self._is_categorical = is_categorical
@@ -116,7 +118,8 @@ class Feature:
         Sets whether the feature is continuous.
 
         Args:
-            is_continuous (bool): True if the feature is continuous, otherwise False.
+            is_continuous (bool): True if the feature is continuous,
+            otherwise False.
         """
         if isinstance(is_continuous, bool):
             self._is_continuous = is_continuous

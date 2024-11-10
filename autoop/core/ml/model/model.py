@@ -13,15 +13,17 @@ from sklearn.ensemble import RandomForestRegressor
 
 class Model(ABC):
     """
-    Abstract base class for machine learning models, providing a standard interface
-    for machine learning workflows, including training, prediction, evaluation,
-    and persistence.
+    Abstract base class for machine learning models,providing a standard 
+    interface for machine learning workflows, including training, 
+    prediction, evaluation, and persistence.
 
     Attributes:
         parameters (dict[str, Any]): Parameters for model configuration.
         trained (bool): Indicates if the model has been trained.
-        type (str): Specifies the model type ('classification', 'regression', or 'other').
-        model (Union[DecisionTreeClassifier, KNeighborsClassifier, RandomForestClassifier,
+        type (str): Specifies the model type ('classification',
+        'regression', or 'other').
+        model (Union[DecisionTreeClassifier, KNeighborsClassifier,
+        RandomForestClassifier,
             DecisionTreeRegressor, LinearRegression, RandomForestRegressor]):
             The underlying scikit-learn model instance.
     """
@@ -61,7 +63,8 @@ class Model(ABC):
         Set the model's configuration parameters.
 
         Args:
-            parameters (dict[str, Any]): A dictionary of model configuration parameters.
+            parameters (dict[str, Any]): A dictionary of
+            model configuration parameters.
         """
         if isinstance(parameters, dict):
             self._parameters = parameters
@@ -93,13 +96,15 @@ class Model(ABC):
         Get the type of the model (classification, regression, or other).
 
         Returns:
-            str: The type of the model, which can be "classification", "regression", or "other".
+            str: The type of the model,
+            which can be "classification", "regression", or "other".
         """
         return self._type
 
     @type.setter
     def type(self, type: str) -> None:
-        if isinstance(type, str) and type in ["classification", "regression", "other"]:
+        if isinstance(type, str) and type in ["classification",
+                                              "regression", "other"]:
             self._type = type
 
     @property
@@ -150,7 +155,8 @@ class Model(ABC):
             X (np.ndarray): Feature matrix for training.
             y (np.ndarray): Target labels for training.
 
-        This method should be implemented by subclasses to fit a model to the data.
+        This method should be implemented by subclasses
+        to fit a model to the data.
         """
         pass
 
@@ -165,7 +171,8 @@ class Model(ABC):
         Returns:
             np.ndarray: Predicted values based on the input features.
 
-        This method should be implemented by subclasses to return model predictions.
+        This method should be implemented by subclasses
+        to return model predictions.
         """
         pass
 
@@ -179,9 +186,11 @@ class Model(ABC):
             y (np.ndarray): True labels for comparison.
 
         Returns:
-            Dict[str, float]: A dictionary containing evaluation metric(s) and their values.
+            Dict[str, float]: A dictionary containing
+            evaluation metric(s) and their values.
 
-        This method should be implemented by subclasses to compute performance metrics.
+        This method should be implemented by subclasses to
+        compute performance metrics.
         """
         pass
 

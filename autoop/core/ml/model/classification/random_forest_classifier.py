@@ -77,7 +77,8 @@ class RandomForestClassifierModel(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray,
+                 y: np.ndarray, metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 

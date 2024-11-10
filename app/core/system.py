@@ -7,11 +7,14 @@ from typing import List
 
 class ArtifactRegistry:
     """
-    Manages the storage and retrieval of artifacts using a database and storage system.
+    Manages the storage and retrieval of artifacts
+    using a database and storage system.
 
     Attributes:
-        _database (Database): The database instance used for storing artifact metadata.
-        _storage (Storage): The storage instance used for storing artifact data.
+        _database (Database): The database instance
+        used for storing artifact metadata.
+        _storage (Storage): The storage instance
+        used for storing artifact data.
     """
 
     def __init__(self, database: Database, storage: Storage) -> None:
@@ -19,7 +22,8 @@ class ArtifactRegistry:
         Initializes the ArtifactRegistry with a database and storage.
 
         Args:
-            database (Database): The database instance to use for metadata storage.
+            database (Database): The database instance to
+            use for metadata storage.
             storage (Storage): The storage instance to use for artifact data.
         """
         self._database = database
@@ -27,10 +31,12 @@ class ArtifactRegistry:
 
     def register(self, artifact: Artifact) -> None:
         """
-        Registers an artifact by saving its data to storage and metadata to the database.
+        Registers an artifact by saving its data to
+        storage and metadata to the database.
 
         Args:
-            artifact (Artifact): The artifact to register, containing data and metadata.
+            artifact (Artifact): The artifact to register,
+            containing data and metadata.
         """
         # save the artifact in the storage
         self._storage.save(artifact.data, artifact.asset_path)
@@ -50,10 +56,12 @@ class ArtifactRegistry:
         Lists all artifacts or filters them by type.
 
         Args:
-            type (str, optional): The type of artifacts to retrieve. Defaults to None.
+            type (str, optional): The type of artifacts to retrieve.
+            Defaults to None.
 
         Returns:
-            List[Artifact]: A list of artifacts matching the specified type, if provided.
+            List[Artifact]: A list of artifacts matching
+            the specified type, if provided.
         """
         entries = self._database.list("artifacts")
         artifacts = []
@@ -107,7 +115,8 @@ class ArtifactRegistry:
 
 class AutoMLSystem:
     """
-    Singleton system for managing the AutoML environment, including storage and artifact registry.
+    Singleton system for managing the AutoML environment, 
+    including storage and artifact registry.
 
     Attributes:
         _instance (AutoMLSystem): Singleton instance of AutoMLSystem.
@@ -133,14 +142,16 @@ class AutoMLSystem:
     @staticmethod
     def get_instance() -> "AutoMLSystem":
         """
-        Retrieves the singleton instance of the AutoMLSystem, initializing it if necessary.
+        Retrieves the singleton instance of the AutoMLSystem, 
+        initializing it if necessary.
 
         Returns:
             AutoMLSystem: The singleton instance of the AutoMLSystem.
         """
         if AutoMLSystem._instance is None:
             AutoMLSystem._instance = AutoMLSystem(
-                LocalStorage("./assets/objects"), Database(LocalStorage("./assets/dbo"))
+                LocalStorage("./assets/objects"), Database(LocalStorage(
+                    "./assets/dbo"))
             )
         AutoMLSystem._instance._database.refresh()
         return AutoMLSystem._instance

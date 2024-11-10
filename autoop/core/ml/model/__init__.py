@@ -28,7 +28,9 @@ from autoop.core.ml.model.classification.decision_tree_classifier import (
 from autoop.core.ml.model.classification.random_forest_classifier import (
     RandomForestClassifierModel,
 )
-from autoop.core.ml.model.classification.k_nearest_neighbour import KNNClassifier
+from autoop.core.ml.model.classification.k_nearest_neighbour import (
+ KNNClassifier
+)
 
 REGRESSION_MODELS = [
     "decision_tree_regressor",
