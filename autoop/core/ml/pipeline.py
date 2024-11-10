@@ -29,8 +29,8 @@ class Pipeline:
         self._metrics = metrics
         self._artifacts = {}
         self._split = split
-        if (target_feature.type == "categorical"
-            and model.type != "classification"):
+        if (target_feature.type == "categorical" and (
+                model.type != "classification")):
             raise ValueError(
                 """Model type must be classification
                 for categorical target feature"""
@@ -83,10 +83,10 @@ Pipeline(
         )
         return artifacts
 
-    def _register_artifact(self, name: str, artifact: Artifact):
+    def _register_artifact(self, name: str, artifact: Artifact) -> None:
         self._artifacts[name] = artifact
 
-    def _preprocess_features(self):
+    def _preprocess_features(self) -> None:
         (target_feature_name, target_data, artifact) = preprocess_features(
             [self._target_feature], self._dataset
         )[0]
@@ -96,7 +96,8 @@ Pipeline(
         for feature_name, data, artifact in input_results:
             self._register_artifact(feature_name, artifact)
         self._output_vector = target_data
-        self._input_vectors = [data for data in input_results]
+        self._input_vectors = [
+            data for (feature_name, data, artifact) in input_results]
 
     def _split_data(self) -> np.ndarray:
         split = self._split

@@ -99,13 +99,6 @@ class Model(ABC):
 
     @type.setter
     def type(self, type: str) -> None:
-        """
-        Set the type of the model.
-
-        Args:
-            type (str): The type of the model, which must be one of "classification",
-                        "regression", or "other".
-        """
         if isinstance(type, str) and type in ["classification", "regression", "other"]:
             self._type = type
 
@@ -114,11 +107,11 @@ class Model(ABC):
         self,
     ) -> (
         DecisionTreeClassifier
-        | KNeighborsClassifier
-        | RandomForestClassifier
-        | DecisionTreeRegressor
-        | LinearRegression
-        | RandomForestRegressor
+        | (KNeighborsClassifier)
+        | (RandomForestClassifier)
+        | (DecisionTreeRegressor)
+        | (LinearRegression)
+        | (RandomForestRegressor)
     ):
         """The scikit-learn model instance."""
         return self._model
@@ -128,19 +121,13 @@ class Model(ABC):
         self,
         model: (
             DecisionTreeClassifier
-            | KNeighborsClassifier
-            | RandomForestClassifier
-            | DecisionTreeRegressor
-            | LinearRegression
-            | RandomForestRegressor
+            | (KNeighborsClassifier)
+            | (RandomForestClassifier)
+            | (DecisionTreeRegressor)
+            | (LinearRegression)
+            | (RandomForestRegressor)
         ),
     ) -> None:
-        """
-        Sets the underlying scikit-learn model instance.
-
-        Args:
-            model: An instance of one of the supported scikit-learn model types.
-        """
         if isinstance(
             model,
             (

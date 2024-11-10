@@ -76,12 +76,6 @@ class Feature:
 
     @type.setter
     def type(self, type: str) -> None:
-        """
-        Sets the data type of the feature.
-
-        Args:
-            type (str): The new data type for the feature.
-        """
         if isinstance(type, str) and type in ["categorical", "numerical", "other"]:
             self._type = type
 
