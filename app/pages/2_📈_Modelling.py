@@ -13,6 +13,8 @@ from autoop.core.ml.model.regression.multiple_linear_regression import MultipleL
 from autoop.core.ml.model.regression.random_forest_regressor import RandomForestRegressorModel
 from autoop.core.ml.metric import MeanSquaredError, Accuracy, Precision, Recall, MeanAbsoluteError, R2Score
 from autoop.core.ml.pipeline import Pipeline
+from autoop.core.ml.artifact import Artifact
+from datetime import datetime
 
 
 def write_helper_text(text: str) -> None:
@@ -106,7 +108,7 @@ else:
                 selected_model = st.selectbox("Select a model", list(model_map.keys())[-3:])
             else:
                 selected_model = st.selectbox("Select a model", list(model_map.keys())[:3])
-            model = model_map[selected_model]
+            ModelClass = model_map[selected_model]
             dataset_split = st.slider("Split your dataset", 0.0, 1.0, 0.8)
             st.write(f"Data used for training: {round(dataset_split * 100)}%")
             st.write(f"Data used for testing: {round(100 - dataset_split * 100)}%")
@@ -117,6 +119,22 @@ else:
                 selected_metrics = st.multiselect("Select the metrics you want to use", 
                                                   list(metric_map.keys())[:3])
             metrics_list = [metric_map[metric] for metric in selected_metrics]
+            artifact = Artifact(
+                name=f"{selected_model}_artifact",
+                asset_path="path/to/asset",  # Update with the actual path if necessary
+                version="1.0",  # Versioning if needed, otherwise can be dynamic
+                data=b"",  # Add binary model data if available or needed
+                type="model",
+                metadata={
+                    "description": f"Artifact for {selected_model} created on {datetime.now()}",
+                    "task_type": detected_task_type,
+                    "input_features": input_feature_names,
+                    "target_feature": target_feature_name,
+                    "metrics": selected_metrics,
+                    },
+                tags=["ML", detected_task_type, selected_model]
+                )
+            model = ModelClass()
         if input_feature_names and selected_model and selected_metrics:
             st.subheader("Pipeline Summary")
             st.write(f"**Dataset**: {selected_dataset.name}")

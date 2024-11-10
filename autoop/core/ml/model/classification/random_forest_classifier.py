@@ -14,7 +14,6 @@ class RandomForestClassifierModel(Model):
         model (RandomForestClassifier): The underlying scikit-learn RandomForestClassifier model instance.
     """
 
-    model: RandomForestClassifier = None
 
     def __init__(self, n_estimators: int = 100) -> None:
         """
@@ -23,6 +22,7 @@ class RandomForestClassifierModel(Model):
         Args:
             n_estimators (int, optional): The number of trees in the forest. Defaults to 100.
         """
+        super().__init__(type="classification")
         self.model = RandomForestClassifier(n_estimators=n_estimators)
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

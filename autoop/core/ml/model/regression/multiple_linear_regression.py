@@ -16,15 +16,12 @@ class MultipleLinearRegression(Model):
         model (LinearRegression): The underlying scikit-learn LinearRegression model instance.
     """
 
-    model: LinearRegression = None
-
-    def __init__(self) -> None:
+    def __init__(self, artifact: Artifact = Artifact(
+            name="default", asset_path="", version="1.0", data=b"", type="regression")) -> None:
         """
         Initialize the MultipleLinearRegression model with the given artifact and LinearRegression instance.
         """
-        # artifact: Artifact = Artifact(name="default", asset_path="", version="1.0", data=b"", type="regression")
-        super().__init__()
-        # self.artifact = artifact
+        super().__init__(artifact=artifact, type="regression")
         self.model = LinearRegression()
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

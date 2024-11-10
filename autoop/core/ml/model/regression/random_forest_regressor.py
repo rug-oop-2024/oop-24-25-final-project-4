@@ -14,8 +14,6 @@ class RandomForestRegressorModel(Model):
         model (RandomForestRegressor): The underlying scikit-learn RandomForestRegressor model instance.
     """
 
-    model: RandomForestRegressor = None
-
     def __init__(self, n_estimators: int = 100) -> None:
         """
         Initialize the RandomForestRegressorModel with the specified number of estimators.
@@ -23,6 +21,7 @@ class RandomForestRegressorModel(Model):
         Args:
             n_estimators (int, optional): The number of trees in the forest. Defaults to 100.
         """
+        super().__init__(type="regression")
         self.model = RandomForestRegressor(n_estimators=n_estimators)
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

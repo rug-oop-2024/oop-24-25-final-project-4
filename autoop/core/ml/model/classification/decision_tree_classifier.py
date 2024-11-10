@@ -3,6 +3,7 @@ import numpy as np
 from autoop.core.ml.model import Model
 from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.metric import get_metric
+from pydantic import PrivateAttr
 
 
 class DecisionTreeClassifierModel(Model):
@@ -16,9 +17,7 @@ class DecisionTreeClassifierModel(Model):
         model (DecisionTreeClassifier): The underlying scikit-learn DecisionTreeClassifier model instance.
     """
 
-    model: DecisionTreeClassifier = None
-
-    def __init__(self, artifact: Artifact):
+    def __init__(self):
         """
         Train the DecisionTreeClassifier on the provided data.
 
@@ -26,8 +25,9 @@ class DecisionTreeClassifierModel(Model):
             X (np.ndarray): Input features for training.
             y (np.ndarray): Target labels for training.
         """
-        super().__init__(artifact=artifact)
-        self.model = DecisionTreeClassifier()
+        super().__init__(type="classification")
+        self._model = DecisionTreeClassifier()
+
 
     def fit(self, X: np.ndarray, y: np.ndarray):
         """
@@ -37,7 +37,7 @@ class DecisionTreeClassifierModel(Model):
             X (np.ndarray): Input features for training.
             y (np.ndarray): Target labels for training.
         """
-        self.model.fit(X, y)
+        self._model.fit(X, y)
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -49,7 +49,7 @@ class DecisionTreeClassifierModel(Model):
         Returns:
             np.ndarray: Predicted labels for the input data.
         """
-        return self.model.predict(X)
+        return self._model.predict(X)
 
     def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
         """

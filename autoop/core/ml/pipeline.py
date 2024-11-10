@@ -105,7 +105,8 @@ Pipeline(
         Y = self._test_y
         self._metrics_results = []
         predictions = self._model.predict(X)
-        for metric in self._metrics:
+        for Metric in self._metrics:
+            metric = Metric()
             result = metric(predictions, Y)
             self._metrics_results.append((metric, result))
         self._predictions = predictions

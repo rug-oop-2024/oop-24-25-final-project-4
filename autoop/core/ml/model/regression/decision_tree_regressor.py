@@ -14,10 +14,8 @@ class DecisionTreeRegressorModel(Model):
         model (DecisionTreeRegressor): The underlying scikit-learn DecisionTreeRegressor model instance.
     """
 
-    model: DecisionTreeRegressor = None
-    model: DecisionTreeRegressor = DecisionTreeRegressor()
-
     def __init__(self) -> None:
+        super().__init__(type="regression")
         self.model = DecisionTreeRegressor()
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

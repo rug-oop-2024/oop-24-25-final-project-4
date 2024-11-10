@@ -7,65 +7,33 @@ from copy import deepcopy
 from typing import Literal, Any, Dict
 
 
-class Model(ABC, BaseModel):
+class Model(ABC):
     """
-    Abstract base class for machine learning models. This class is intended to
-    be inherited by specific model types (e.g., regression or classification models).
-
-    Attributes:
-        parameters (Dict[str, Any]): A dictionary of model parameters.
-        trained (bool): Indicates whether the model has been trained.
-        type (Literal["classification", "regression"]): Specifies the type of model (either "classification" or "regression").
-        model (Any): The actual model instance that will be used for training and prediction.
+    Abstract base class for machine learning models.
     """
 
-    parameters: Dict[str, Any] = Field(default_factory=dict)
-    trained: bool = False
-    type: Literal["classification", "regression"] = "other"
-    model: Any = None
+    def __init__(self, artifact: Any = None, parameters: Dict[str, Any] = {}, trained: bool = False, type: str = "other"):
+        self.artifact = artifact
+        self.parameters = parameters
+        self.trained = trained
+        self.type = type
+        self.model = None  # Default to None, subclass should define it.
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
-        """
-        Train the model on the provided data.
-
-        Args:
-            X (np.ndarray): Input features for training.
-            y (np.ndarray): Target values for training.
-        """
         pass
 
     @abstractmethod
     def predict(self, X: np.ndarray) -> np.ndarray:
-        """
-        Make predictions based on input data.
-
-        Args:
-            X (np.ndarray): Input features for making predictions.
-
-        Returns:
-            np.ndarray: Predicted values for the input data.
-        """
         pass
 
     @abstractmethod
     def evaluate(self, X: np.ndarray, y: np.ndarray) -> Dict[str, float]:
-        """
-        Evaluate the model on test data.
-
-        Args:
-            X (np.ndarray): Input features for testing.
-            y (np.ndarray): True values for testing.
-
-        Returns:
-            Dict[str, float]: A dictionary of evaluation metrics.
-        """
         pass
 
     def save(self) -> None:
         """
         Save the model state, parameters, and training details to the specified artifact path.
-        The model is serialized using joblib.
         """
         save_path = self.artifact.asset_path
         joblib.dump(
@@ -81,7 +49,6 @@ class Model(ABC, BaseModel):
     def load(self) -> None:
         """
         Load the model state, parameters, and training details from the specified artifact path.
-        The model is deserialized using joblib.
         """
         load_path = self.artifact.asset_path
         data = joblib.load(load_path)
