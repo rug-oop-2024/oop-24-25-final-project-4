@@ -29,10 +29,11 @@ def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
         col_dtype = data_frame[col].dtype
         if pd.api.types.is_numeric_dtype(data_frame[col]):
             feature_type = "numerical"
-        elif (isinstance(col_dtype, pd.CategoricalDtype)
-              or pd.api.types.is_object_dtype(
+        elif (isinstance(
+                col_dtype, pd.CategoricalDtype) or (
+                    pd.api.types.is_object_dtype(
                   data_frame[col]
-        )):
+        ))):
             feature_type = "categorical"
         else:
             raise ValueError(f"""Column '{col}'

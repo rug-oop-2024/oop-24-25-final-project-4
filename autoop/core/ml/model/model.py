@@ -47,29 +47,29 @@ class Model(ABC):
 
     @type.setter
     def type(self, type: str) -> None:
-        if (isinstance(type, str) and
-            type in ["classification", "regression", "other"]):
+        if (isinstance(type, str)
+                and type in ["classification", "regression", "other"]):
             self._type = type
 
     @property
     def model(self) -> (
-        DecisionTreeClassifier |
-        KNeighborsClassifier |
-        RandomForestClassifier |
-        DecisionTreeRegressor |
-        LinearRegression |
-        RandomForestRegressor
+        DecisionTreeClassifier
+        | KNeighborsClassifier
+        | RandomForestClassifier
+        | DecisionTreeRegressor
+        | LinearRegression
+        | RandomForestRegressor
     ):
         return self._model
 
     @model.setter
-    def model(self, model:(
-        DecisionTreeClassifier |
-        KNeighborsClassifier |
-        RandomForestClassifier |
-        DecisionTreeRegressor |
-        LinearRegression |
-        RandomForestRegressor
+    def model(self, model: (
+        DecisionTreeClassifier
+        | KNeighborsClassifier
+        | RandomForestClassifier
+        | DecisionTreeRegressor
+        | LinearRegression
+        | RandomForestRegressor
     )) -> None:
         if isinstance(model, (
             DecisionTreeClassifier,
