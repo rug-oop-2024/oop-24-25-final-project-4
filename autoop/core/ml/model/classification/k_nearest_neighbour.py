@@ -16,8 +16,7 @@ class KNNClassifier(Model):
         scikit-learn KNeighborsClassifier model instance.
     """
 
-    def __init__(self, parameters: dict[str, Any] = {},
-                 n_neighbors: int = 5) -> None:
+    def __init__(self, parameters: dict[str, Any] = {}, n_neighbors: int = 5) -> None:
         """
         Initialize the KNNClassifierModel with
         the specified number of neighbors.
@@ -28,16 +27,29 @@ class KNNClassifier(Model):
         """
         super().__init__(type="classification", parameters=parameters)
         self.n_neighbors = n_neighbors
-        self.model = KNeighborsClassifier(n_neighbors=self.n_neighbors,
-                                          **self.parameters)
+        self.model = KNeighborsClassifier(
+            n_neighbors=self.n_neighbors, **self.parameters
+        )
 
     @property
     def n_neighbors(self) -> int:
+        """
+        Get the number of neighbors used by the KNN model.
+
+        Returns:
+            int: The number of neighbors.
+        """
         return self._n_neighbors
 
     @n_neighbors.setter
     def n_neighbors(self, n_neighbors: int) -> None:
         if isinstance(n_neighbors, int):
+            """
+            Set the number of neighbors used by the KNN model.
+
+            Args:
+                n_neighbors (int): The number of neighbors to use for classification.
+            """
             self._n_neighbors = n_neighbors
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
@@ -62,8 +74,7 @@ class KNNClassifier(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray,
-                 metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 
