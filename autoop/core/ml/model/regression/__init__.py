@@ -7,5 +7,6 @@ It includes models such as:
 - MultipleLinearRegression
 
 These models are designed to handle various regression
-tasks and can be used in the pipeline to train, predict, and evaluate regression-based machine learning tasks.
+tasks and can be used in the pipeline to train, predict,
+and evaluate regression-based machine learning tasks.
 """
