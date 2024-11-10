@@ -49,3 +49,4 @@ Select the desired *metric(s)* you wish to test the model's effectiveness with u
 
 ### Train the model
 Make sure the pipeline summary is correctly stating your selections and click `Train the model` to train the model with your data.
+This pipeline will be added to the deployment page, your previously made pipelines can be found there as well.
