@@ -194,7 +194,7 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     st.write(predictions_df)
 
 
-def create_pipeline(data: pd.DataFrame)-> (
+def create_pipeline(data: pd.DataFrame) -> (
         tuple[dict[str, Any], Model, dict[str, Any]]):
     """
     Create and configure a machine learning pipeline based on user input.
