@@ -115,7 +115,7 @@ class ArtifactRegistry:
 
 class AutoMLSystem:
     """
-    Singleton system for managing the AutoML environment, 
+    Singleton system for managing the AutoML environment,
     including storage and artifact registry.
 
     Attributes:
@@ -142,7 +142,7 @@ class AutoMLSystem:
     @staticmethod
     def get_instance() -> "AutoMLSystem":
         """
-        Retrieves the singleton instance of the AutoMLSystem, 
+        Retrieves the singleton instance of the AutoMLSystem,
         initializing it if necessary.
 
         Returns:

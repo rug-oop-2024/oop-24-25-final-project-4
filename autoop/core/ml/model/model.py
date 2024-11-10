@@ -13,8 +13,8 @@ from sklearn.ensemble import RandomForestRegressor
 
 class Model(ABC):
     """
-    Abstract base class for machine learning models,providing a standard 
-    interface for machine learning workflows, including training, 
+    Abstract base class for machine learning models,providing a standard
+    interface for machine learning workflows, including training,
     prediction, evaluation, and persistence.
 
     Attributes:

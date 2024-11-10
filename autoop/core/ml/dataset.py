@@ -43,7 +43,7 @@ class Dataset(Artifact):
             data (pd.DataFrame): The dataset as a Pandas DataFrame.
             name (str): The name of the dataset.
             asset_path (str): The file path where the dataset will be stored.
-            version (str, optional): The version of the dataset. 
+            version (str, optional): The version of the dataset.
             Defaults to "1.0.0".
 
         Returns:
@@ -122,7 +122,7 @@ class DataPlotter:
         plt.show()
         return plt.gcf()
 
-    def scatter_2d(self, x_variable: str, 
+    def scatter_2d(self, x_variable: str,
                    y_variable: str, **kwargs) -> plt.Figure:
         """
         Plots a 2D scatter plot of the dataset for the given

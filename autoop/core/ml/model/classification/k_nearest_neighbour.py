@@ -17,7 +17,8 @@ class KNNClassifier(Model):
     """
 
     def __init__(self,
-                 parameters: dict[str, Any] = {}, n_neighbors: int = 5) -> None:
+                 parameters: dict[str, Any] = {},
+                 n_neighbors: int = 5) -> None:
         """
         Initialize the KNNClassifierModel with
         the specified number of neighbors.
@@ -76,7 +77,7 @@ class KNNClassifier(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, 
+    def evaluate(self, X: np.ndarray,
                  y: np.ndarray, metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.

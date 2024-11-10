@@ -29,7 +29,7 @@ from autoop.core.ml.model.classification.random_forest_classifier import (
     RandomForestClassifierModel,
 )
 from autoop.core.ml.model.classification.k_nearest_neighbour import (
- KNNClassifier
+    KNNClassifier
 )
 
 REGRESSION_MODELS = [
