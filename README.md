@@ -153,32 +153,34 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
-| `ML/artifact`                         | NF           |                      |         | |
-| `ML/feature`                          | NF           |                      |         | |
-| `ML/metric`                           | NF           |                      |         | |
-| `ML/metric/extensions`                | FN           |                      |         | |
-| `ML/model`                            | NF           |                      |         | |
-| `ML/model/extensions`                 | FN           |                      |         | |
-| `ML/pipeline/evaluation`              | FN           |                      |         | | 
-| `ST/page/datasets`                    | NF           |                      |         | |
-| `ST/datasets/management/create`       | FN           |                      |         | |
-| `ST/datasets/management/save`         | FN           |                      |         | |
-| `ST/page/modelling`                   | NF           |                      |         | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
-| `ST/page/deployment`                  | FN           |                      |         | |
-| `ST/deployment/load`                  | FN           |                      |         | |
-| `ST/deployment/predict`               | FN           |                      |         | |
+| Up-to-date requirements.txt           | NF           |Both                  |X        | |
+| `ML/detect-features`                  | FN           |Raha Torabihaghighi   |X        | |
+| `ML/artifact`                         | NF           |Raha Torabihaghighi   |X        | |
+| `ML/feature`                          | NF           |Raha Torabihaghighi   |X        | |
+| `ML/metric`                           | NF           |Raha Torabihaghighi   |X        | |
+| `ML/metric/extensions`                | FN           |Raha Torabihaghighi   |X        | |Both members helped with debugging
+| `ML/model`                            | NF           |Raha Torabihaghighi   |X        | |
+| `ML/model/extensions`                 | FN           |Raha Torabihaghighi   |X        | |
+| `ML/pipeline/evaluation`              | FN           |Raha Torabihaghighi   |X        | | 
+| `ST/page/datasets`                    | NF           |Heleen van Asselt     |X        | |
+| `ST/datasets/management/create`       | FN           |Heleen van Asselt     |X        | |
+| `ST/datasets/management/save`         | FN           |Heleen van Asselt     |X        | |
+| `ST/page/modelling`                   | NF           |Heleen van Asselt     |X        | |
+| `ST/modelling/datasets/list`          | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/datasets/features`      | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/models`                 | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/pipeline/split`         | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/pipeline/metrics`       | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/pipeline/summary`       | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/pipeline/train`         | FN           |Heleen van Asselt     |X        | |
+| `ST/modelling/pipeline/save`          | FN           |Heleen van Asselt     |X        | |
+| `ST/page/deployment`                  | FN           |Heleen van Asselt     |X        | |
+| `ST/deployment/load`                  | FN           |Heleen van Asselt     |X        | |
+| `ST/deployment/predict`               | FN           |Heleen van Asselt     |X        | |
 
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|           |            |                      |         | |
+|`ST/modelling/plot`                    |NF            |Heleeen van Asselt    |X        |     |
+|`core/instructions `                   |NF            |Raha Torabihaghighi   |X        |     |
+|`core/welcome`                         |NF            |Raha Torabihaghighi   |X        |     |
