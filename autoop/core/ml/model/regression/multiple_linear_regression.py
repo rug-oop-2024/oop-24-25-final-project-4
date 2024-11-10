@@ -18,20 +18,13 @@ class MultipleLinearRegression(Model):
 
     model: LinearRegression = None
 
-    def __init__(
-        self,
-        artifact: Artifact = Artifact(
-            name="default", asset_path="", version="1.0", data=b"", type="regression"
-        ),
-    ) -> None:
+    def __init__(self) -> None:
         """
         Initialize the MultipleLinearRegression model with the given artifact and LinearRegression instance.
-
-        Args:
-            artifact (Artifact, optional): The artifact that holds model metadata and asset path. Defaults to a new `Artifact`.
         """
+        # artifact: Artifact = Artifact(name="default", asset_path="", version="1.0", data=b"", type="regression")
         super().__init__()
-        self.artifact = artifact
+        # self.artifact = artifact
         self.model = LinearRegression()
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

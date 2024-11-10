@@ -7,8 +7,9 @@ from io import BytesIO
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
-def preprocess_features(features: List[Feature],
-                        dataset: Dataset) -> List[Tuple[str, np.ndarray, dict]]:
+def preprocess_features(
+    features: List[Feature], dataset: Dataset
+) -> List[Tuple[str, np.ndarray, dict]]:
     """Preprocess features.
     Args:
         features (List[Feature]): List of features.
@@ -18,22 +19,23 @@ def preprocess_features(features: List[Feature],
         List of preprocessed features. Each ndarray of shape (N, ...)
     """
     results = []
-    raw = pd.read_csv(BytesIO(dataset.read()))
+    if isinstance(dataset, pd.DataFrame):
+        raw = dataset
+    else:
+        raw = pd.read_csv(BytesIO(dataset.read()))
     for feature in features:
         print(feature.name)
         if feature.type == "categorical":
             encoder = OneHotEncoder()
             data = encoder.fit_transform(
-                raw[feature.name].values.reshape(-1, 1)).toarray()
-            aritfact = {"type": "OneHotEncoder",
-                        "encoder": encoder.get_params()}
+                raw[feature.name].values.reshape(-1, 1)
+            ).toarray()
+            aritfact = {"type": "OneHotEncoder", "encoder": encoder.get_params()}
             results.append((feature.name, data, aritfact))
         if feature.type == "numerical":
             scaler = StandardScaler()
-            data = scaler.fit_transform(
-                raw[feature.name].values.reshape(-1, 1))
-            artifact = {"type": "StandardScaler",
-                        "scaler": scaler.get_params()}
+            data = scaler.fit_transform(raw[feature.name].values.reshape(-1, 1))
+            artifact = {"type": "StandardScaler", "scaler": scaler.get_params()}
             results.append((feature.name, data, artifact))
     # Sort for consistency
     results = list(sorted(results, key=lambda x: x[0]))
