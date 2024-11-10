@@ -194,7 +194,7 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     st.write(predictions_df)
 
 
-def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model]:
+def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model, dict[str, Any]]:
     """
     Create and configure a machine learning pipeline based on user input.
 
@@ -219,6 +219,10 @@ def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model]:
                   "R^2 Score": R2Score}
 
     model = None
+    detected_task_type = None
+    selected_model = None
+    dataset_split = None
+    selected_metrics = None
 
     features = detect_feature_types(data)
     feature_map = {feature.name: feature for feature in features}
@@ -299,29 +303,18 @@ def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model]:
             st.session_state.pipeline_trained = True
             if st.session_state.pipeline_trained:
                 display_pipeline_results(st.session_state.pipeline_results)
+    metadata_for_saving = {"data_set": selected_dataset.name, "input_feature_names": input_feature_names,
+                         "target_feature_name": target_feature_name, "task_type": detected_task_type,
+                         "model": selected_model, "split": dataset_split, "metrics": selected_metrics}
 
-    return st.session_state.get("pipeline_results", {}), model
+    return st.session_state.get("pipeline_results", {}), model, metadata_for_saving
 
 
 def save_pipeline(name: str, version: str,
-                  model: Model, results: dict) -> None:
+                  model: Model, results: dict, metadata: dict[str, Any]) -> None:
     """
-    Save the machine learning pipeline,
-    including the trained model and metadata,
-    as an Artifact in the AutoML system.
-
-    Args:
-        name (str): The name of the pipeline.
-        version (str): The version of the pipeline, e.g., '1.0.0'.
-        model: The trained model object
-        (e.g., scikit-learn, XGBoost model).
-        results (dict): Dictionary containing pipeline
-        metadata such as metrics, input features, target feature,
-        split ratios, and artifacts.
-
-    Saves:
-        An Artifact containing the serialized model
-        and metadata in the AutoML registry.
+    Save the machine learning pipeline, including the trained model,
+    metadata, and results (metrics and predictions).
     """
     pipeline_dir = "./pipelines"
     os.makedirs(pipeline_dir, exist_ok=True)
@@ -330,15 +323,19 @@ def save_pipeline(name: str, version: str,
     metadata = {
         "name": name,
         "version": version,
-        "input_features": results.get("input_features", []),
-        "target_feature": results.get("target_feature", ""),
-        "split": results.get("split", ""),
-        "metrics": results.get("metrics", {}),
+        "dataset_name": metadata["data_set"],
+        "input_feature_names": metadata["input_feature_names"],
+        "target_feature_name": metadata["target_feature_name"],
+        "dataset_split": metadata["split"],
+        "task_type": metadata["task_type"],
+        "model": metadata["model"],
+        "metrics_names": metadata["metrics"]
     }
 
     artifact_data = {
         "model": model,
         "metadata": metadata,
+        "results": results  # Save the results (metrics and predictions)
     }
 
     serialized_data = pickle.dumps(artifact_data)
@@ -387,7 +384,7 @@ else:
     if to_do == 'Create a plot':
         plot(dataframe)
     elif to_do == 'Train a model':
-        pipeline_results, model = create_pipeline(dataframe)
+        pipeline_results, model, metadata = create_pipeline(dataframe)
         if pipeline_results:
             name = st.text_input(
                 "Enter a name for the pipeline:",
@@ -410,4 +407,4 @@ else:
                 save_pipeline(st.session_state.pipeline_name,
                               st.session_state.pipeline_version,
                               model,
-                              pipeline_results)
+                              pipeline_results, metadata)
