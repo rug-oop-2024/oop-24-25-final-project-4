@@ -14,17 +14,59 @@ class DecisionTreeRegressorModel(Model):
     Attributes:
         model (DecisionTreeRegressor): The underlying scikit-learn DecisionTreeRegressor model instance.
     """
+<<<<<<< HEAD
     def __init__(self, parameters: dict[str, Any] = {}) -> None:
         super().__init__(type="regression", parameters=parameters)
         self.model = DecisionTreeRegressor(**self.parameters)
+=======
+
+    def __init__(self) -> None:
+        super().__init__(type="regression")
+        """
+        Initializes a new instance of DecisionTreeRegressorModel, setting up
+        the underlying DecisionTreeRegressor model from scikit-learn.
+        """
+        self.model = DecisionTreeRegressor()
+>>>>>>> 8c02284f77b8960aeb9bbbafa2b43c35e8eeccb4
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
+        """
+        Fits the DecisionTreeRegressor model to the training data.
+
+        Args:
+            X (np.ndarray): Training feature data of shape (n_samples, n_features).
+            y (np.ndarray): Target values of shape (n_samples,).
+
+        Returns:
+            None
+        """
         self.model.fit(X, y)
 
     def predict(self, X: np.ndarray) -> np.ndarray:
+        """
+        Predicts target values for the given feature data using the trained model.
+
+        Args:
+            X (np.ndarray): Feature data for which predictions are to be made,
+                            of shape (n_samples, n_features).
+
+        Returns:
+            np.ndarray: Predicted target values of shape (n_samples,).
+        """
         return self.model.predict(X)
 
     def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
+        """
+        Evaluates the model's predictions against true values using a specified metric.
+
+        Args:
+            X (np.ndarray): Feature data for evaluation, of shape (n_samples, n_features).
+            y (np.ndarray): True target values of shape (n_samples,).
+            metric_name (str): The name of the evaluation metric to be used.
+
+        Returns:
+            float: The computed metric value representing model performance.
+        """
         y_pred = self.predict(X)
         metric = get_metric(metric_name)
         return metric(y, y_pred)

@@ -4,10 +4,10 @@ from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 
 
-def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
+def detect_feature_types(dataset: Dataset) -> List[Feature]:
     """Assumption: only categorical and numerical features and no NaN values.
     Args:
-        data_frame: pd.Dataframe
+        dataset: Dataset
     Returns:
         List[Feature]: A list of `Feature` objects, each representing a feature in the dataset
         with its detected type (either 'numerical' or 'categorical').
@@ -16,6 +16,10 @@ def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
         ValueError: If the dataset contains NaN values or unsupported feature types.
     """
     features = []
+
+    data_frame = dataset.read()
+    if not isinstance(data_frame, pd.DataFrame):
+        raise TypeError("Expected dataset.read() to return a DataFrame.")
 
     data_frame = data_frame.dropna()
 

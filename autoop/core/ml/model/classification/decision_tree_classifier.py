@@ -1,7 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 from autoop.core.ml.model import Model
-from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.metric import get_metric
 from pydantic import PrivateAttr
 from typing import Dict, Any
@@ -28,7 +27,6 @@ class DecisionTreeClassifierModel(Model):
         """
         super().__init__(type="classification", parameters=parameters)
         self.model = DecisionTreeClassifier(**self.parameters)
-
 
     def fit(self, X: np.ndarray, y: np.ndarray):
         """
