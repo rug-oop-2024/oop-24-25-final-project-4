@@ -4,7 +4,7 @@ from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 
 
-def detect_feature_types(dataset: Dataset) -> List[Feature]:
+def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
     """Assumption: only categorical and numerical features and no NaN values.
     Args:
         dataset: Dataset
@@ -17,9 +17,9 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     """
     features = []
 
-    data_frame = dataset.read()
-    if not isinstance(data_frame, pd.DataFrame):
-        raise TypeError("Expected dataset.read() to return a DataFrame.")
+    #data_frame = dataset.read()
+    #if not isinstance(data_frame, pd.DataFrame):
+    #    raise TypeError("Expected dataset.read() to return a DataFrame.")
 
     data_frame = data_frame.dropna()
 

@@ -112,11 +112,7 @@ Pipeline(
     def _train(self):
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
-<<<<<<< HEAD
-        self.model.fit(X=X, y=Y)
-=======
-        self._model.fit(X, Y)
->>>>>>> 8c02284f77b8960aeb9bbbafa2b43c35e8eeccb4
+        self.model.fit(X, Y)
 
     def _evaluate(self):
         X = self._compact_vectors(self._test_X)
