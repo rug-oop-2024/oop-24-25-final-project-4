@@ -33,7 +33,7 @@ def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
                 col_dtype, pd.CategoricalDtype) or (
                     pd.api.types.is_object_dtype(
                         data_frame[col]))
-        ):
+                        ):
             feature_type = "categorical"
         else:
             raise ValueError(f"""Column '{col}'
