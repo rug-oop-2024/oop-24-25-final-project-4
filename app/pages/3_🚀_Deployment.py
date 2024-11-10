@@ -4,12 +4,15 @@ from app.core.system import AutoMLSystem
 from autoop.core.ml.artifact import Artifact
 import pickle
 
+
 def select_pipeline(pipelines: list[Artifact]) -> Artifact:
     """
-    Allow the user to select a saved pipeline from the list of available pipelines.
+    Allow the user to select a saved pipeline
+    from the list of available pipelines.
 
     Args:
-        pipelines (list): List of Artifact objects representing saved pipelines.
+        pipelines (list): List of Artifact objects
+        representing saved pipelines.
 
     Returns:
         Artifact: The selected pipeline.
@@ -21,13 +24,14 @@ def select_pipeline(pipelines: list[Artifact]) -> Artifact:
         "Select the pipeline you want to use:",
         list(pipeline_map.keys()))
     selected_pipeline = pipeline_map[pipeline_name]
-    
+
     st.write(f"""You selected the pipeline:
              {selected_pipeline.name},
              version {selected_pipeline.version}""")
     return selected_pipeline
 
-def show_summary(pipeline) -> None:
+
+def show_summary(pipeline: Artifact) -> None:
     """
     Display a summary of the selected pipeline, including its name and version.
 
@@ -37,6 +41,7 @@ def show_summary(pipeline) -> None:
     st.subheader("Pipeline Summary")
     st.write("Pipeline Name:", pipeline.name)
     st.write("Pipeline Version:", pipeline.version)
+
 
 st.set_page_config(page_title="Deployment", page_icon="🚀")
 st.title("Deployment")
@@ -56,7 +61,8 @@ else:
 
     model = loaded_data["model"]
 
-    uploaded_file = st.file_uploader("Upload a CSV file for prediction", type="csv")
+    uploaded_file = st.file_uploader(
+        "Upload a CSV file for prediction", type="csv")
     if uploaded_file is not None:
         input_data = pd.read_csv(uploaded_file)
         st.write("Uploaded Data:", input_data.head())

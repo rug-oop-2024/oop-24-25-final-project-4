@@ -44,6 +44,7 @@ if 'pipeline_name' not in st.session_state:
 if 'pipeline_version' not in st.session_state:
     st.session_state.pipeline_version = ''
 
+
 def write_helper_text(text: str) -> None:
     """
     Display helper text in the Streamlit app.
@@ -62,7 +63,8 @@ def select_dataset(datasets: list[Dataset]) -> tuple[Dataset, pd.DataFrame]:
         datasets (list[Dataset]): A list of available Dataset objects.
 
     Returns:
-        tuple[Dataset, pd.DataFrame]: The selected dataset and its corresponding DataFrame.
+        tuple[Dataset, pd.DataFrame]: The selected dataset
+        and its corresponding DataFrame.
     """
     dataset_map = {dataset.name: dataset for dataset in datasets}
     data_name = st.selectbox('Select the dataset you want to use',
@@ -83,7 +85,8 @@ def plot(data: pd.DataFrame) -> None:
     Args:
         data (pd.DataFrame): The dataset to plot.
 
-    This function provides options to plot histograms, scatter plots, and 3D plots.
+    This function provides options to plot histograms,
+    scatter plots, and 3D plots.
     """
     plotter = DataPlotter(data)
     columns = st.multiselect("Select columns to plot", data.columns)
@@ -118,7 +121,8 @@ def pipeline_summary(name: str, input_features: list[str],
         name (str): The name of the dataset.
         input_features (list[str]): The list of input features.
         target_feature (str): The target feature.
-        task_type (str): The type of the task ("Classification" or "Regression").
+        task_type (str): The type of the task
+        ("Classification" or "Regression").
         model (str): The selected model.
         split (int): The dataset split ratio for training and testing.
         metrics (list[str]): The list of selected metrics.
@@ -136,7 +140,8 @@ def pipeline_summary(name: str, input_features: list[str],
 
 def display_pipeline_results(results: dict[str, Any]) -> None:
     """
-    Display the results of the trained pipeline including metrics and predictions.
+    Display the results of the trained pipeline
+    including metrics and predictions.
 
     Args:
         results (dict[str, Any]): The results of the pipeline execution.
@@ -169,10 +174,14 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     train_predictions_sample = train_predictions[:10]
     test_predictions_sample = test_predictions[:10]
 
-    if isinstance(train_predictions_sample, (list, np.ndarray)) and isinstance(train_predictions_sample[0], (list, np.ndarray)):
-        train_predictions_sample = [item[0] for item in train_predictions_sample]
-    if isinstance(test_predictions_sample, (list, np.ndarray)) and isinstance(test_predictions_sample[0], (list, np.ndarray)):
-        test_predictions_sample = [item[0] for item in test_predictions_sample]
+    if isinstance(train_predictions_sample, (list, np.ndarray)) and (
+        isinstance(train_predictions_sample[0], (list, np.ndarray))):
+        train_predictions_sample = [
+            item[0] for item in train_predictions_sample]
+    if isinstance(test_predictions_sample, (list, np.ndarray)) and (
+        isinstance(test_predictions_sample[0], (list, np.ndarray))):
+        test_predictions_sample = [
+            item[0] for item in test_predictions_sample]
 
     predictions_df = pd.DataFrame({
         "Train Predictions": train_predictions_sample,
@@ -294,25 +303,30 @@ def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model]:
     return st.session_state.get("pipeline_results", {}), model
 
 
-def save_pipeline(name: str, version: str, model, results: dict) -> None:
+def save_pipeline(name: str, version: str,
+                  model: Model, results: dict) -> None:
     """
-    Save the machine learning pipeline, including the trained model and metadata,
+    Save the machine learning pipeline,
+    including the trained model and metadata,
     as an Artifact in the AutoML system.
 
     Args:
         name (str): The name of the pipeline.
         version (str): The version of the pipeline, e.g., '1.0.0'.
-        model: The trained model object (e.g., scikit-learn, XGBoost model).
-        results (dict): Dictionary containing pipeline metadata such as metrics,
-                        input features, target feature, split ratios, and artifacts.
+        model: The trained model object
+        (e.g., scikit-learn, XGBoost model).
+        results (dict): Dictionary containing pipeline
+        metadata such as metrics, input features, target feature,
+        split ratios, and artifacts.
 
     Saves:
-        An Artifact containing the serialized model and metadata in the AutoML registry.
+        An Artifact containing the serialized model
+        and metadata in the AutoML registry.
     """
     pipeline_dir = "./pipelines"
     os.makedirs(pipeline_dir, exist_ok=True)
     asset_path = os.path.join(pipeline_dir, f"{name}_{version}.pkl")
-    
+
     metadata = {
         "name": name,
         "version": version,
@@ -336,7 +350,7 @@ def save_pipeline(name: str, version: str, model, results: dict) -> None:
         name=f"{name}_{version}",
         version=version,
         data=serialized_data,
-        asset_path=asset_path, 
+        asset_path=asset_path,
         type="pipeline",
         tags=["machine_learning", "pipeline", name],
         metadata=metadata

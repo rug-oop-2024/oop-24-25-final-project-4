@@ -15,7 +15,8 @@ def save_dataset(file: Dataset, name: str) -> None:
         name (str): The name to assign to the dataset.
 
     Raises:
-        UnicodeDecodeError: If there is an encoding issue while reading the CSV file.
+        UnicodeDecodeError: If there is an encoding issue
+        while reading the CSV file.
     """
     data = pd.read_csv(file)
 
@@ -49,7 +50,8 @@ def display_datasets(datasets: list[Dataset]) -> None:
     Args:
         datasets (list[Dataset]): A list of Dataset objects to display.
 
-    This function iterates through the datasets and displays their name and version.
+    This function iterates through the datasets
+    and displays their name and version.
     """
     number_datasets = len(datasets)
     if number_datasets == 1:

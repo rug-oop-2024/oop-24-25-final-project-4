@@ -111,12 +111,12 @@ class Model(ABC):
     def model(
         self,
     ) -> (
-        DecisionTreeClassifier
-        | (KNeighborsClassifier)
-        | (RandomForestClassifier)
-        | (DecisionTreeRegressor)
-        | (LinearRegression)
-        | (RandomForestRegressor)
+        DecisionTreeClassifier | (
+            KNeighborsClassifier) | (
+                RandomForestClassifier) | (
+                    DecisionTreeRegressor) | (
+                        LinearRegression) | (
+                            RandomForestRegressor)
     ):
         """The scikit-learn model instance."""
         return self._model
@@ -125,12 +125,12 @@ class Model(ABC):
     def model(
         self,
         model: (
-            DecisionTreeClassifier
-            | (KNeighborsClassifier)
-            | (RandomForestClassifier)
-            | (DecisionTreeRegressor)
-            | (LinearRegression)
-            | (RandomForestRegressor)
+            DecisionTreeClassifier | (
+                KNeighborsClassifier) | (
+                    RandomForestClassifier) | (
+                        DecisionTreeRegressor) | (
+                            LinearRegression) | (
+                                RandomForestRegressor)
         ),
     ) -> None:
         if isinstance(
