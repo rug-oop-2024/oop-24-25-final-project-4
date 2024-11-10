@@ -16,8 +16,9 @@ class RandomForestClassifierModel(Model):
         scikit-learn RandomForestClassifier model instance.
     """
 
-    def __init__(self, parameters: dict[str, Any] = {},
-                 n_estimators: int = 100) -> None:
+    def __init__(
+        self, parameters: dict[str, Any] = {}, n_estimators: int = 100
+    ) -> None:
         """
         Initialize the RandomForestClassifierModel with
         the specified number of estimators.
@@ -29,14 +30,28 @@ class RandomForestClassifierModel(Model):
         super().__init__(type="classification", parameters=parameters)
         self.n_estimators = n_estimators
         self.model = RandomForestClassifier(
-            n_estimators=self.n_estimators, **self.parameters)
+            n_estimators=self.n_estimators, **self.parameters
+        )
 
     @property
     def n_estimators(self) -> int:
+        """
+        Get the number of trees (estimators) used by the random forest model.
+
+        Returns:
+            int: The number of estimators.
+        """
         return self._n_estimators
 
     @n_estimators.setter
     def n_estimators(self, n_estimators: int) -> None:
+        """
+        Train the RandomForestClassifier on the provided data.
+
+        Args:
+            X (np.ndarray): Input features for training.
+            y (np.ndarray): Target labels for training.
+        """
         if isinstance(n_estimators, int):
             self._n_estimators = n_estimators
 
@@ -62,8 +77,7 @@ class RandomForestClassifierModel(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray,
-                 metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
         """
         Evaluate the model's performance using the specified metric.
 

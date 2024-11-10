@@ -13,11 +13,33 @@ from sklearn.ensemble import RandomForestRegressor
 
 class Model(ABC):
     """
-    Abstract base class for machine learning models.
+    Abstract base class for machine learning models, providing a standard interface
+    for machine learning workflows, including training, prediction, evaluation,
+    and persistence.
+
+    Attributes:
+        parameters (dict[str, Any]): Parameters for model configuration.
+        trained (bool): Indicates if the model has been trained.
+        type (str): Specifies the model type ('classification', 'regression', or 'other').
+        model (Union[DecisionTreeClassifier, KNeighborsClassifier, RandomForestClassifier,
+            DecisionTreeRegressor, LinearRegression, RandomForestRegressor]):
+            The underlying scikit-learn model instance.
     """
 
-    def __init__(self, parameters: dict[str, Any] = None,
-                 trained: bool = False, type: str = "other") -> None:
+    def __init__(
+        self,
+        parameters: dict[str, Any] = None,
+        trained: bool = False,
+        type: str = "other",
+    ) -> None:
+        """
+        Initializes the model with parameters, training status, and model type.
+
+        Args:
+            parameters (dict[str, Any], optional): Model parameters.
+            trained (bool, optional): Initial training status.
+            type (str, optional): Type of the model (e.g., "classification").
+        """
         self.parameters = parameters if parameters is not None else {}
         self.trained = trained
         self.type = type
@@ -25,72 +47,142 @@ class Model(ABC):
 
     @property
     def parameters(self) -> dict[str, Any]:
+        """
+        Get the model's configuration parameters.
+
+        Returns:
+            dict[str, Any]: The dictionary containing the model's parameters.
+        """
         return self._parameters
 
     @parameters.setter
     def parameters(self, parameters: dict[str, Any]) -> None:
+        """
+        Set the model's configuration parameters.
+
+        Args:
+            parameters (dict[str, Any]): A dictionary of model configuration parameters.
+        """
         if isinstance(parameters, dict):
             self._parameters = parameters
 
     @property
     def trained(self) -> bool:
+        """
+        Get the model's training status.
+
+        Returns:
+            bool: True if the model has been trained, False otherwise.
+        """
         return self._trained
 
     @trained.setter
     def trained(self, trained: bool) -> None:
+        """
+        Set the model's training status.
+
+        Args:
+            trained (bool): Boolean value indicating if the model is trained.
+        """
         if isinstance(trained, bool):
             self._trained = trained
 
     @property
     def type(self) -> str:
+        """
+        Get the type of the model (classification, regression, or other).
+
+        Returns:
+            str: The type of the model, which can be "classification", "regression", or "other".
+        """
         return self._type
 
     @type.setter
     def type(self, type: str) -> None:
-        if (isinstance(type, str)
-                and type in ["classification", "regression", "other"]):
+        if isinstance(type, str) and type in ["classification", "regression", "other"]:
             self._type = type
 
     @property
-    def model(self) -> (
-        DecisionTreeClassifier | (
-            KNeighborsClassifier) | (
-                RandomForestClassifier) | (
-                    DecisionTreeRegressor) | (
-                        LinearRegression) | (
-                            RandomForestRegressor)
+    def model(
+        self,
+    ) -> (
+        DecisionTreeClassifier
+        | (KNeighborsClassifier)
+        | (RandomForestClassifier)
+        | (DecisionTreeRegressor)
+        | (LinearRegression)
+        | (RandomForestRegressor)
     ):
+        """The scikit-learn model instance."""
         return self._model
 
     @model.setter
-    def model(self, model: (
-        DecisionTreeClassifier | (
-            KNeighborsClassifier) | (
-                RandomForestClassifier) | (
-                    DecisionTreeRegressor) | (
-                        LinearRegression) | (
-                            RandomForestRegressor))
+    def model(
+        self,
+        model: (
+            DecisionTreeClassifier
+            | (KNeighborsClassifier)
+            | (RandomForestClassifier)
+            | (DecisionTreeRegressor)
+            | (LinearRegression)
+            | (RandomForestRegressor)
+        ),
     ) -> None:
-        if isinstance(model, (
-            DecisionTreeClassifier,
-            KNeighborsClassifier,
-            RandomForestClassifier,
-            DecisionTreeRegressor,
-            LinearRegression,
-            RandomForestRegressor)
+        if isinstance(
+            model,
+            (
+                DecisionTreeClassifier,
+                KNeighborsClassifier,
+                RandomForestClassifier,
+                DecisionTreeRegressor,
+                LinearRegression,
+                RandomForestRegressor,
+            ),
         ):
             self._model = model
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
+        """
+        Trains the model using the provided data.
+
+        Args:
+            X (np.ndarray): Feature matrix for training.
+            y (np.ndarray): Target labels for training.
+
+        This method should be implemented by subclasses to fit a model to the data.
+        """
         pass
 
     @abstractmethod
     def predict(self, X: np.ndarray) -> np.ndarray:
+        """
+        Makes predictions using the trained model.
+
+        Args:
+            X (np.ndarray): Feature matrix for making predictions.
+
+        Returns:
+            np.ndarray: Predicted values based on the input features.
+
+        This method should be implemented by subclasses to return model predictions.
+        """
         pass
 
     @abstractmethod
     def evaluate(self, X: np.ndarray, y: np.ndarray) -> Dict[str, float]:
+        """
+        Evaluates the model performance using a specified metric.
+
+        Args:
+            X (np.ndarray): Feature matrix for evaluation.
+            y (np.ndarray): True labels for comparison.
+
+        Returns:
+            Dict[str, float]: A dictionary containing evaluation metric(s) and their values.
+
+        This method should be implemented by subclasses to compute performance metrics.
+        """
         pass
 
     def save(self) -> None:

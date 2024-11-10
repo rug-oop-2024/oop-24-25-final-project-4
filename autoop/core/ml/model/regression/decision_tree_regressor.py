@@ -15,7 +15,15 @@ class DecisionTreeRegressorModel(Model):
         model (DecisionTreeRegressor): The underlying
         scikit-learn DecisionTreeRegressor model instance.
     """
+
     def __init__(self, parameters: dict[str, Any] = {}) -> None:
+        """
+        Initialize the DecisionTreeRegressorModel with specified parameters.
+
+        Args:
+            parameters (dict, optional): A dictionary of hyperparameters to be
+            passed to the DecisionTreeRegressor. Defaults to an empty dictionary.
+        """
         super().__init__(type="regression", parameters=parameters)
         self.model = DecisionTreeRegressor(**self.parameters)
 
@@ -47,8 +55,7 @@ class DecisionTreeRegressorModel(Model):
         """
         return self.model.predict(X)
 
-    def evaluate(self, X: np.ndarray, y: np.ndarray,
-                 metric_name: str) -> float:
+    def evaluate(self, X: np.ndarray, y: np.ndarray, metric_name: str) -> float:
         """
         Evaluates the model's predictions against true values
         using a specified metric.
