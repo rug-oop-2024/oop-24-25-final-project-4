@@ -43,10 +43,25 @@ if 'pipeline_version' not in st.session_state:
     st.session_state.pipeline_version = ''
 
 def write_helper_text(text: str) -> None:
+    """
+    Display helper text in the Streamlit app.
+
+    Args:
+        text (str): The helper text to display.
+    """
     st.write(f"<p style=\"color: #888;\">{text}</p>", unsafe_allow_html=True)
 
 
 def select_dataset(datasets: list[Dataset]) -> tuple[Dataset, pd.DataFrame]:
+    """
+    Allows the user to select a dataset from the available datasets.
+
+    Args:
+        datasets (list[Dataset]): A list of available Dataset objects.
+
+    Returns:
+        tuple[Dataset, pd.DataFrame]: The selected dataset and its corresponding DataFrame.
+    """
     dataset_map = {dataset.name: dataset for dataset in datasets}
     data_name = st.selectbox('Select the dataset you want to use',
                              list(dataset_map.keys()),
@@ -60,6 +75,14 @@ def select_dataset(datasets: list[Dataset]) -> tuple[Dataset, pd.DataFrame]:
 
 
 def plot(data: pd.DataFrame) -> None:
+    """
+    Allows the user to plot selected columns of the dataset.
+
+    Args:
+        data (pd.DataFrame): The dataset to plot.
+
+    This function provides options to plot histograms, scatter plots, and 3D plots.
+    """
     plotter = DataPlotter(data)
     columns = st.multiselect("Select columns to plot", data.columns)
     fig = None
@@ -86,6 +109,18 @@ def plot(data: pd.DataFrame) -> None:
 def pipeline_summary(name: str, input_features: list[str],
                      target_feature: str, task_type: str,
                      model: str, split: int, metrics: list[str]) -> None:
+    """
+    Display a summary of the pipeline configuration.
+
+    Args:
+        name (str): The name of the dataset.
+        input_features (list[str]): The list of input features.
+        target_feature (str): The target feature.
+        task_type (str): The type of the task ("Classification" or "Regression").
+        model (str): The selected model.
+        split (int): The dataset split ratio for training and testing.
+        metrics (list[str]): The list of selected metrics.
+    """
     st.subheader("Pipeline Summary")
     st.write(f"**Dataset**: {name}")
     st.write(f"**Input features**: {', '.join(input_features)}")
@@ -98,6 +133,12 @@ def pipeline_summary(name: str, input_features: list[str],
 
 
 def display_pipeline_results(results: dict[str, Any]) -> None:
+    """
+    Display the results of the trained pipeline including metrics and predictions.
+
+    Args:
+        results (dict[str, Any]): The results of the pipeline execution.
+    """
     train_metrics = {
         metric.__class__.__name__: value
         for metric, value in results["train_metrics"]
@@ -138,6 +179,15 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
 
 
 def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
+    """
+    Create and configure a machine learning pipeline based on user input.
+
+    Args:
+        data (pd.DataFrame): The dataset to use for creating the pipeline.
+
+    Returns:
+        dict[str, Any]: The results from the pipeline execution.
+    """
     model_map = {"Decision Tree Classifier": DecisionTreeClassifierModel,
                  "K Nearest Neighbours": KNNClassifier,
                  "Random Forest Classifier": RandomForestClassifierModel,
@@ -238,6 +288,28 @@ def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
 
 def save_pipeline(name: str, version: str,
                   results: dict[str, Any]) -> None:
+    """
+    Save the machine learning pipeline configuration, including the model, 
+    metrics, and artifacts to a directory for future use or deployment.
+    
+    Args:
+        name (str): The name of the pipeline.
+        version (str): The version of the pipeline, in the format 'major.minor.patch'.
+        results (dict[str, Any]): A dictionary containing the results of the pipeline execution, 
+                                  including train/test metrics, model predictions, and artifacts.
+    
+    This function creates a directory named "pipelines/{name}_{version}" to store:
+        - A pipeline configuration file (`pipeline_config.pkl`), which contains:
+            - `name`: The name of the pipeline
+            - `version`: The version of the pipeline
+            - `input_features`: List of input feature names used in the pipeline
+            - `target_feature`: The target feature used in the pipeline
+            - `split`: The data split ratio used for training and testing
+            - `model`: The name of the trained model
+        - Any artifacts associated with the pipeline are saved as separate `.pkl` files.
+        - A `timestamp.txt` file indicating when the pipeline was saved.
+    """
+
     pipeline_dir = f"pipelines/{name}_{version}"
     os.makedirs(pipeline_dir, exist_ok=True)
 

@@ -6,6 +6,17 @@ from autoop.core.ml.dataset import Dataset
 
 
 def save_dataset(file: Dataset, name: str) -> None:
+    """
+    Saves the uploaded dataset to a specified location and registers it
+    with the AutoML system.
+
+    Args:
+        file (Dataset): The uploaded dataset file.
+        name (str): The name to assign to the dataset.
+
+    Raises:
+        UnicodeDecodeError: If there is an encoding issue while reading the CSV file.
+    """
     data = pd.read_csv(file)
 
     asset_path = f"datasets/{name}.csv"
@@ -19,15 +30,27 @@ def save_dataset(file: Dataset, name: str) -> None:
 
     try:
         automl.registry.register(new_dataset)
-        st.success(f"""Dataset '{dataset_name}' has been uploaded
+        st.success(
+            f"""Dataset '{dataset_name}' has been uploaded
                    and registered successfully.
-                   Refresh the page to see it under 'Availabe Datasets'""")
+                   Refresh the page to see it under 'Availabe Datasets'"""
+        )
     except UnicodeDecodeError:
-        st.error("""Error: Dataset could not be
-                 registered due to encoding issues.""")
+        st.error(
+            """Error: Dataset could not be
+                 registered due to encoding issues."""
+        )
 
 
 def display_datasets(datasets: list[Dataset]) -> None:
+    """
+    Displays the list of available datasets to the user.
+
+    Args:
+        datasets (list[Dataset]): A list of Dataset objects to display.
+
+    This function iterates through the datasets and displays their name and version.
+    """
     number_datasets = len(datasets)
     if number_datasets == 1:
         st.write("You have 1 dataset saved:")
@@ -61,5 +84,7 @@ st.subheader("Available Datasets")
 if datasets:
     display_datasets(datasets)
 else:
-    st.write("""You currently have no datasets uploaded.
-             Please upload a dataset at the top of the page.""")
+    st.write(
+        """You currently have no datasets uploaded.
+             Please upload a dataset at the top of the page."""
+    )

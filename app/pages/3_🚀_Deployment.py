@@ -3,7 +3,16 @@ import pandas as pd
 from app.core.system import AutoMLSystem
 from autoop.core.ml.artifact import Artifact
 
-def select_pipeline(pipelines: list[Artifact]):
+def select_pipeline(pipelines: list[Artifact]) -> Artifact:
+    """
+    Allow the user to select a saved pipeline from the list of available pipelines.
+
+    Args:
+        pipelines (list): List of Artifact objects representing saved pipelines.
+
+    Returns:
+        Artifact: The selected pipeline.
+    """
     pipeline_map = {
         f"""{pipeline.name} (v{pipeline.version})""":
         pipeline for pipeline in pipelines}
@@ -17,7 +26,13 @@ def select_pipeline(pipelines: list[Artifact]):
              version {selected_pipeline.version}""")
     return selected_pipeline
 
-def show_summary(pipeline):
+def show_summary(pipeline) -> None:
+    """
+    Display a summary of the selected pipeline, including its name and version.
+
+    Args:
+        pipeline (Artifact): The selected pipeline.
+    """
     st.subheader("Pipeline Summary")
     st.write("Pipeline Name:", pipeline.name)
     st.write("Pipeline Version:", pipeline.version)
