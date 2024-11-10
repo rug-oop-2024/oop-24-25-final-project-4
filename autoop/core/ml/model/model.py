@@ -53,32 +53,32 @@ class Model(ABC):
 
     @property
     def model(self) -> (
-        DecisionTreeClassifier
-        | KNeighborsClassifier
-        | RandomForestClassifier
-        | DecisionTreeRegressor
-        | LinearRegression
-        | RandomForestRegressor
+        DecisionTreeClassifier | (
+        KNeighborsClassifier) | (
+        RandomForestClassifier) | (
+        DecisionTreeRegressor) | (
+        LinearRegression) | (
+        RandomForestRegressor)
     ):
         return self._model
 
     @model.setter
     def model(self, model: (
-        DecisionTreeClassifier
-        | KNeighborsClassifier
-        | RandomForestClassifier
-        | DecisionTreeRegressor
-        | LinearRegression
-        | RandomForestRegressor
-    )) -> None:
+        DecisionTreeClassifier | (
+        KNeighborsClassifier) | (
+        RandomForestClassifier) | (
+        DecisionTreeRegressor) | (
+        LinearRegression) | (
+        RandomForestRegressor))
+    ) -> None:
         if isinstance(model, (
             DecisionTreeClassifier,
             KNeighborsClassifier,
             RandomForestClassifier,
             DecisionTreeRegressor,
             LinearRegression,
-            RandomForestRegressor
-        )):
+            RandomForestRegressor)
+        ):
             self._model = model
 
     @abstractmethod
