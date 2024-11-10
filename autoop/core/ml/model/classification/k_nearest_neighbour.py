@@ -14,8 +14,6 @@ class KNNClassifier(Model):
         model (KNeighborsClassifier): The underlying scikit-learn KNeighborsClassifier model instance.
     """
 
-    model: KNeighborsClassifier = None
-
     def __init__(self, n_neighbors: int = 5) -> None:
         """
         Initialize the KNNClassifierModel with the specified number of neighbors.
@@ -23,6 +21,7 @@ class KNNClassifier(Model):
         Args:
             n_neighbors (int, optional): The number of neighbors to use for classification. Defaults to 5.
         """
+        super().__init__(type="classification")
         self.model = KNeighborsClassifier(n_neighbors=n_neighbors)
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
