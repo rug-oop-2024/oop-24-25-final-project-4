@@ -98,13 +98,13 @@ Pipeline(
     def _train(self):
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
-        self._model.fit(X=X, y=Y)
+        self.model.fit(X=X, y=Y)
 
     def _evaluate(self):
         X = self._compact_vectors(self._test_X)
         Y = self._test_y
         self._metrics_results = []
-        predictions = self._model.predict(X)
+        predictions = self.model.predict(X)
         for Metric in self._metrics:
             metric = Metric()
             result = metric(predictions, Y)
@@ -116,8 +116,6 @@ Pipeline(
         self._split_data()
         self._train()
 
-        train_X = self._compact_vectors(self._train_X)
-        train_Y = self._train_y
         self._evaluate()
 
 

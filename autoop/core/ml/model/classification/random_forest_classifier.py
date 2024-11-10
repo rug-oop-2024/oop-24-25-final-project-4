@@ -2,6 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
+from typing import Dict, Any
 
 
 class RandomForestClassifierModel(Model):
@@ -15,15 +16,25 @@ class RandomForestClassifierModel(Model):
     """
 
 
-    def __init__(self, n_estimators: int = 100) -> None:
+    def __init__(self, parameters: dict[str, Any] = {}, n_estimators: int = 100) -> None:
         """
         Initialize the RandomForestClassifierModel with the specified number of estimators.
 
         Args:
             n_estimators (int, optional): The number of trees in the forest. Defaults to 100.
         """
-        super().__init__(type="classification")
-        self.model = RandomForestClassifier(n_estimators=n_estimators)
+        super().__init__(type="classification", parameters=parameters)
+        self.n_estimators = n_estimators
+        self.model = RandomForestClassifier(n_estimators=self.n_estimators, **self.parameters)
+
+    @property
+    def n_estimators(self):
+        return self._n_estimators
+
+    @n_estimators.setter
+    def n_estimators(self, n_estimators):
+        if isinstance(n_estimators, int):
+            self._n_estimators = n_estimators
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """

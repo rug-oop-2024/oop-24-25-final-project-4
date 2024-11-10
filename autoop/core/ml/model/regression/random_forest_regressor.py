@@ -2,6 +2,7 @@ from sklearn.ensemble import RandomForestRegressor
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
 import numpy as np
+from typing import Dict, Any
 
 
 class RandomForestRegressorModel(Model):
@@ -14,15 +15,25 @@ class RandomForestRegressorModel(Model):
         model (RandomForestRegressor): The underlying scikit-learn RandomForestRegressor model instance.
     """
 
-    def __init__(self, n_estimators: int = 100) -> None:
+    def __init__(self, n_estimators: int = 100, parameters: dict[str, Any] = {}) -> None:
         """
         Initialize the RandomForestRegressorModel with the specified number of estimators.
 
         Args:
             n_estimators (int, optional): The number of trees in the forest. Defaults to 100.
         """
-        super().__init__(type="regression")
-        self.model = RandomForestRegressor(n_estimators=n_estimators)
+        super().__init__(type="regression", parameters=parameters)
+        self.n_estimators = n_estimators
+        self.model = RandomForestRegressor(n_estimators=self.n_estimators, **self.parameters)
+
+    @property
+    def n_estimators(self):
+        return self._n_estimators
+
+    @n_estimators.setter
+    def n_estimators(self, n_estimators):
+        if isinstance(n_estimators, int):
+            self._n_estimators = n_estimators
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """

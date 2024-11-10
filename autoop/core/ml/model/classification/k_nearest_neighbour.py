@@ -2,6 +2,7 @@ from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
+from typing import Dict, Any
 
 
 class KNNClassifier(Model):
@@ -14,15 +15,25 @@ class KNNClassifier(Model):
         model (KNeighborsClassifier): The underlying scikit-learn KNeighborsClassifier model instance.
     """
 
-    def __init__(self, n_neighbors: int = 5) -> None:
+    def __init__(self, parameters: dict[str, Any] = {}, n_neighbors: int = 5) -> None:
         """
         Initialize the KNNClassifierModel with the specified number of neighbors.
 
         Args:
             n_neighbors (int, optional): The number of neighbors to use for classification. Defaults to 5.
         """
-        super().__init__(type="classification")
-        self.model = KNeighborsClassifier(n_neighbors=n_neighbors)
+        super().__init__(type="classification", parameters=parameters)
+        self.n_neighbors = n_neighbors
+        self.model = KNeighborsClassifier(n_neighbors=self.n_neighbors, **self.parameters)
+
+    @property
+    def n_neighbors(self):
+        return self._n_neighbors
+
+    @n_neighbors.setter
+    def n_neighbors(self, n_neighbors):
+        if isinstance(n_neighbors, int):
+            self._n_neighbors = n_neighbors
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """

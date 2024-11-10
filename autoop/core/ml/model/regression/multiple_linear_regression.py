@@ -3,6 +3,7 @@ from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
 from autoop.core.ml.artifact import Artifact
 import numpy as np
+from typing import Dict, Any
 
 
 class MultipleLinearRegression(Model):
@@ -16,13 +17,12 @@ class MultipleLinearRegression(Model):
         model (LinearRegression): The underlying scikit-learn LinearRegression model instance.
     """
 
-    def __init__(self, artifact: Artifact = Artifact(
-            name="default", asset_path="", version="1.0", data=b"", type="regression")) -> None:
+    def __init__(self, parameters: dict[str, Any] = {}) -> None:
         """
         Initialize the MultipleLinearRegression model with the given artifact and LinearRegression instance.
         """
-        super().__init__(artifact=artifact, type="regression")
-        self.model = LinearRegression()
+        super().__init__(type="regression", parameters=parameters)
+        self.model = LinearRegression(**self.parameters)
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """

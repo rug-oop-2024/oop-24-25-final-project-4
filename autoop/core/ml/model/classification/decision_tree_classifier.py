@@ -4,6 +4,7 @@ from autoop.core.ml.model import Model
 from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.metric import get_metric
 from pydantic import PrivateAttr
+from typing import Dict, Any
 
 
 class DecisionTreeClassifierModel(Model):
@@ -17,7 +18,7 @@ class DecisionTreeClassifierModel(Model):
         model (DecisionTreeClassifier): The underlying scikit-learn DecisionTreeClassifier model instance.
     """
 
-    def __init__(self):
+    def __init__(self, parameters: dict[str, Any] = {}):
         """
         Train the DecisionTreeClassifier on the provided data.
 
@@ -25,8 +26,8 @@ class DecisionTreeClassifierModel(Model):
             X (np.ndarray): Input features for training.
             y (np.ndarray): Target labels for training.
         """
-        super().__init__(type="classification")
-        self._model = DecisionTreeClassifier()
+        super().__init__(type="classification", parameters=parameters)
+        self.model = DecisionTreeClassifier(**self.parameters)
 
 
     def fit(self, X: np.ndarray, y: np.ndarray):

@@ -5,6 +5,12 @@ import numpy as np
 import joblib
 from copy import deepcopy
 from typing import Literal, Any, Dict
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 
 class Model(ABC):
@@ -12,12 +18,47 @@ class Model(ABC):
     Abstract base class for machine learning models.
     """
 
-    def __init__(self, artifact: Any = None, parameters: Dict[str, Any] = {}, trained: bool = False, type: str = "other"):
-        self.artifact = artifact
-        self.parameters = parameters
+    def __init__(self, parameters: dict[str, Any] = None, trained: bool = False, type: str = "other"):
+        self.parameters = parameters if parameters is not None else {}
         self.trained = trained
         self.type = type
         self.model = None  # Default to None, subclass should define it.
+
+    @property
+    def parameters(self):
+        return self._parameters
+    
+    @parameters.setter
+    def parameters(self, parameters):
+        if isinstance(parameters, dict):
+            self._parameters = parameters
+
+    @property
+    def trained(self):
+        return self._trained
+    
+    @trained.setter
+    def trained(self, trained):
+        if isinstance(trained, bool):
+            self._trained = trained
+
+    @property
+    def type(self):
+        return self._type
+    
+    @type.setter
+    def type(self, type):
+        if isinstance(type, str) and type in ["classification", "regression", "other"]:
+            self._type = type
+
+    @property
+    def model(self):
+        return self._model
+
+    @model.setter
+    def model(self, model):
+        if isinstance(model, (DecisionTreeClassifier, KNeighborsClassifier, RandomForestClassifier, DecisionTreeRegressor, LinearRegression, RandomForestRegressor)):
+            self._model = model
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

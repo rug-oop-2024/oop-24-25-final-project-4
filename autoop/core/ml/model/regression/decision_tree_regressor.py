@@ -2,6 +2,7 @@ from sklearn.tree import DecisionTreeRegressor
 from autoop.core.ml.model import Model
 from autoop.core.ml.metric import get_metric
 import numpy as np
+from typing import Dict, Any
 
 
 class DecisionTreeRegressorModel(Model):
@@ -13,10 +14,9 @@ class DecisionTreeRegressorModel(Model):
     Attributes:
         model (DecisionTreeRegressor): The underlying scikit-learn DecisionTreeRegressor model instance.
     """
-
-    def __init__(self) -> None:
-        super().__init__(type="regression")
-        self.model = DecisionTreeRegressor()
+    def __init__(self, parameters: dict[str, Any] = {}) -> None:
+        super().__init__(type="regression", parameters=parameters)
+        self.model = DecisionTreeRegressor(**self.parameters)
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         self.model.fit(X, y)
