@@ -32,9 +32,8 @@ def detect_feature_types(data_frame: pd.DataFrame) -> List[Feature]:
         elif (isinstance(
                 col_dtype, pd.CategoricalDtype) or (
                     pd.api.types.is_object_dtype(
-                        data_frame[col]))
-            ):
-                feature_type = "categorical"
+                        data_frame[col]))):
+            feature_type = "categorical"
         else:
             raise ValueError(f"""Column '{col}'
                              contains an unsupported feature type.""")
