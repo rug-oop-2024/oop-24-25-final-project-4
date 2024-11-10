@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 from io import BytesIO
+import re
+import os
+import pickle
+from datetime import datetime
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset, DataPlotter
@@ -26,6 +30,17 @@ from autoop.core.ml.metric import (
 from autoop.core.ml.pipeline import Pipeline
 from typing import Any
 
+if 'pipeline_results' not in st.session_state:
+    st.session_state.pipeline_results = {}
+
+if 'pipeline_trained' not in st.session_state:
+    st.session_state.pipeline_trained = False
+
+if 'pipeline_name' not in st.session_state:
+    st.session_state.pipeline_name = ''
+
+if 'pipeline_version' not in st.session_state:
+    st.session_state.pipeline_version = ''
 
 def write_helper_text(text: str) -> None:
     st.write(f"<p style=\"color: #888;\">{text}</p>", unsafe_allow_html=True)
@@ -122,7 +137,7 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     st.write(predictions_df)
 
 
-def create_pipeline(data: pd.DataFrame) -> None:
+def create_pipeline(data: pd.DataFrame) -> dict[str, Any]:
     model_map = {"Decision Tree Classifier": DecisionTreeClassifierModel,
                  "K Nearest Neighbours": KNNClassifier,
                  "Random Forest Classifier": RandomForestClassifierModel,
@@ -196,6 +211,7 @@ def create_pipeline(data: pd.DataFrame) -> None:
             )
         metrics_list = [metric_map[metric] for metric in selected_metrics]
 
+    results = {}
     if input_feature_names and selected_model and selected_metrics:
         pipeline_summary(selected_dataset.name, input_feature_names,
                          target_feature_name, detected_task_type,
@@ -212,9 +228,44 @@ def create_pipeline(data: pd.DataFrame) -> None:
                 dataset_split
             )
             results = pipeline.execute()
-            pipeline_trained = True
-        if pipeline_trained:
-            display_pipeline_results(results)
+            st.session_state.pipeline_results = results
+            st.session_state.pipeline_trained = True
+            if st.session_state.pipeline_trained:
+                display_pipeline_results(st.session_state.pipeline_results)
+
+    return st.session_state.get("pipeline_results", {})
+
+
+def save_pipeline(name: str, version: str,
+                  results: dict[str, Any]) -> None:
+    pipeline_dir = f"pipelines/{name}_{version}"
+    os.makedirs(pipeline_dir, exist_ok=True)
+
+    pipeline_config = {
+        "name": name,
+        "version": version,
+        "input_features": [str(feature) for feature in results["train_metrics"]],
+        "target_feature": str(results["test_metrics"]),
+        "split": results["test_predictions"],
+        "model": str(results["train_predictions"])
+    }
+    
+    config_file = os.path.join(pipeline_dir, "pipeline_config.pkl")
+    with open(config_file, "wb") as f:
+        pickle.dump(pipeline_config, f)
+    
+    artifacts = results.get("artifacts", [])
+    for artifact in artifacts:
+        artifact_name = artifact.name
+        artifact_file = os.path.join(pipeline_dir, f"{artifact_name}.pkl")
+        with open(artifact_file, "wb") as f:
+            pickle.dump(artifact.read(), f)
+
+    timestamp_file = os.path.join(pipeline_dir, "timestamp.txt")
+    with open(timestamp_file, "w") as f:
+        f.write(f"Pipeline saved on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+    st.write(f"Pipeline saved at: {pipeline_dir}")
 
 
 st.set_page_config(page_title="Modelling", page_icon="📈")
@@ -240,4 +291,26 @@ else:
     if to_do == 'Create a plot':
         plot(dataframe)
     elif to_do == 'Train a model':
-        create_pipeline(dataframe)
+        pipeline_results = create_pipeline(dataframe)
+        if pipeline_results:
+            name = st.text_input(
+                "Enter a name for the pipeline:",
+                placeholder="Pipeline name",
+                value=st.session_state.get('pipeline_name', ''))
+            version = st.text_input(
+                "Enter a version for the pipeline:",
+                placeholder="1.0.0",
+                value=st.session_state.get('pipeline_version', ''))
+
+            st.session_state.pipeline_name = name
+            st.session_state.pipeline_version = version
+
+            pattern = r'^\d+(\.\d+)*$'
+            if name and version and not re.match(pattern, version):
+                st.error("Please enter a valid number for version")
+            if st.session_state.pipeline_name and (
+                st.session_state.pipeline_version and (
+                    st.button("Save Pipeline"))):
+                save_pipeline(st.session_state.pipeline_name,
+                              st.session_state.pipeline_version,
+                              pipeline_results)
