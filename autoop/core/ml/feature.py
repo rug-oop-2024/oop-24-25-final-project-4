@@ -47,7 +47,7 @@ class Feature:
 
     @type.setter
     def type(self, type):
-        if isinstance(type, str) and type in ["categorical", "continuous", "other"]:
+        if isinstance(type, str) and type in ["categorical", "numerical", "other"]:
             self._type = type
 
     @property

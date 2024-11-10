@@ -24,7 +24,6 @@ def preprocess_features(
     else:
         raw = pd.read_csv(BytesIO(dataset.read()))
     for feature in features:
-        print(feature.name)
         if feature.type == "categorical":
             encoder = OneHotEncoder()
             data = encoder.fit_transform(
