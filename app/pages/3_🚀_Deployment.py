@@ -4,7 +4,6 @@ from app.core.system import AutoMLSystem
 from autoop.core.ml.artifact import Artifact
 import pickle
 import numpy as np
-from autoop.core.ml.pipeline import Pipeline
 
 
 def select_pipeline(pipelines: list[Artifact]) -> Artifact:
@@ -47,8 +46,11 @@ def show_summary(pipeline: Artifact) -> None:
     metadata = pipeline.metadata
 
     if metadata:
-        st.write("**Input Features**:", ", ".join(metadata.get("input_feature_names", [])))
-        st.write("**Target Feature**:", metadata.get("target_feature_name", "N/A"))
+        st.write("**Input Features**:",
+                 ", ".join(metadata.get(
+                     "input_feature_names", [])))
+        st.write("**Target Feature**:",
+                 metadata.get("target_feature_name", "N/A"))
         st.write("**Task Type**:", metadata.get("task_type", "N/A"))
         st.write("**Model**:", metadata.get("model", "N/A"))
         split = metadata.get('dataset_split', None)

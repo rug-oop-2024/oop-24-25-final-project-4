@@ -194,7 +194,8 @@ def display_pipeline_results(results: dict[str, Any]) -> None:
     st.write(predictions_df)
 
 
-def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model, dict[str, Any]]:
+def create_pipeline(data: pd.DataFrame)-> (
+        tuple[dict[str, Any], Model, dict[str, Any]]):
     """
     Create and configure a machine learning pipeline based on user input.
 
@@ -303,17 +304,27 @@ def create_pipeline(data: pd.DataFrame) -> tuple[dict[str, Any], Model, dict[str
             st.session_state.pipeline_trained = True
             if st.session_state.pipeline_trained:
                 display_pipeline_results(st.session_state.pipeline_results)
-    metadata_for_saving = {"data_set": selected_dataset.name, "input_feature_names": input_feature_names,
-                         "target_feature_name": target_feature_name, "task_type": detected_task_type,
-                         "model": selected_model, "split": dataset_split, "metrics": selected_metrics}
+    metadata_for_saving = {
+        "data_set": selected_dataset.name,
+        "input_feature_names": input_feature_names,
+        "target_feature_name": target_feature_name,
+        "task_type": detected_task_type,
+        "model": selected_model,
+        "split": dataset_split,
+        "metrics": selected_metrics}
 
-    return st.session_state.get("pipeline_results", {}), model, metadata_for_saving
+    return (
+        st.session_state.get("pipeline_results", {}),
+        model,
+        metadata_for_saving)
 
 
 def save_pipeline(name: str, version: str,
-                  model: Model, results: dict, metadata: dict[str, Any]) -> None:
+                  model: Model, results: dict,
+                  metadata: dict[str, Any]) -> None:
     """
-    Save the machine learning pipeline, including the trained model,
+    Save the machine learning pipeline,
+    including the trained model,
     metadata, and results (metrics and predictions).
     """
     pipeline_dir = "./pipelines"
