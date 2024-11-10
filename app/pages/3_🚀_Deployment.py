@@ -40,8 +40,8 @@ def show_summary(pipeline: Artifact) -> None:
         pipeline (Artifact): The selected pipeline.
     """
     st.subheader("Pipeline Summary")
-    st.write("Pipeline Name:", pipeline.name)
-    st.write("Pipeline Version:", pipeline.version)
+    st.write("**Pipeline Name**:", pipeline.name)
+    st.write("**Pipeline Version**:", pipeline.version)
 
     metadata = pipeline.metadata
 
